@@ -9,6 +9,7 @@
 #include "PluginEditor.h"
 //hello
 //hey hey!!
+//test
 //==============================================================================
 GranularSynthProjectAudioProcessorEditor::GranularSynthProjectAudioProcessorEditor (GranularSynthProjectAudioProcessor& p)
     : AudioProcessorEditor (&p), audioProcessor (p)
