@@ -7,7 +7,7 @@
 */
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
-
+//hello
 //==============================================================================
 GranularSynthProjectAudioProcessorEditor::GranularSynthProjectAudioProcessorEditor (GranularSynthProjectAudioProcessor& p)
     : AudioProcessorEditor (&p), audioProcessor (p)
