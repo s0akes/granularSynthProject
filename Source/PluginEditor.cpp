@@ -7,8 +7,7 @@
 */
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
-//hello
-//hi matthew oram - how's it going my slime
+
 //==============================================================================
 GranularSynthProjectAudioProcessorEditor::GranularSynthProjectAudioProcessorEditor (GranularSynthProjectAudioProcessor& p)
     : AudioProcessorEditor (&p), audioProcessor (p)
