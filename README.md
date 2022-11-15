@@ -13,8 +13,8 @@ GOALS: <br />
 <li>Trigger creation of grains WITHOUT RANDOMNESS with MIDI <br />
 <li>Apply default ADSR values from ValueTree <br />
 <li>Add sliders to edit these values and update ValueTree <br />
-<li>Implement randomness
+<li>Implement randomness &#x1f352;
 
-<p>&#x1f352;</p>
+
 
 </html>
