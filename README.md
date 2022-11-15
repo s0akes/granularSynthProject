@@ -5,7 +5,7 @@ effects. The envelope can be applied to various aspects of the synthesiser besid
 such as the density of the grains.
 
 GOALS:
-Trigger creation of grains WITHOUT RANDOMNESS with MIDI
+Trigger creation of grains WITHOUT RANDOMNESS with MIDI <br />
 Apply default ADSR values from ValueTree
 Add sliders to edit these values and update ValueTree
 Implement randomness
