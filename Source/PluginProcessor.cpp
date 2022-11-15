@@ -8,7 +8,7 @@
 
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
-
+#include <iostream>
 //==============================================================================
 GranularSynthProjectAudioProcessor::GranularSynthProjectAudioProcessor()
 #ifndef JucePlugin_PreferredChannelConfigurations
