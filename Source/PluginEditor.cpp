@@ -16,6 +16,16 @@ GranularSynthProjectAudioProcessorEditor::GranularSynthProjectAudioProcessorEdit
 
 
     setSize (210, 635);
+
+    addAndMakeVisible(&randomSlider);
+
+    randomSlider.setRange(0.01, 10, 0.01);
+    randomSlider.setValue(1);
+    randomSlider.setSkewFactorFromMidPoint(1);
+    randomSlider.setSliderStyle(juce::Slider::SliderStyle::Rotary);
+    randomSlider.setTextBoxStyle(juce::Slider::TextEntryBoxPosition::TextBoxBelow, false, 95, 28);
+    randomSlider.setColour(juce::Slider::rotarySliderFillColourId, juce::Colours::lightseagreen);
+
 }
 
 GranularSynthProjectAudioProcessorEditor::~GranularSynthProjectAudioProcessorEditor()
@@ -37,16 +47,6 @@ void GranularSynthProjectAudioProcessorEditor::paint (juce::Graphics& g)
     randomLabel.setText("Random", juce::dontSendNotification);
     randomLabel.setColour(juce::Label::textColourId, juce::Colours::lightseagreen);
     randomLabel.setJustificationType(juce::Justification::centred);
-
-    addAndMakeVisible(randomSlider);
-    randomSlider.setRange(0.01, 10, 0.01);
-    randomSlider.setValue(1);
-    randomSlider.setSkewFactorFromMidPoint(1);
-    //randomSlider.addListener(this);
-    randomSlider.setSliderStyle(juce::Slider::SliderStyle::Rotary);
-    randomSlider.setTextBoxStyle(juce::Slider::TextEntryBoxPosition::TextBoxBelow, false, 95, 28);
-    randomSlider.setColour(juce::Slider::rotarySliderFillColourId, juce::Colours::lightseagreen);
-
 
 
 }
