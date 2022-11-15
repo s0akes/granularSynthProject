@@ -22,13 +22,13 @@ public:
     double getNextSample(); //returns the next sample based on the synth
 
 private:
-    float randomFequency; //the new frequency 
-    float delta; //phase shift in samples for the given frequency
+    float randomFequency = 440; //the new frequency 
+    float delta = 0; //phase shift in samples for the given frequency
 
     juce::AudioSampleBuffer* waveTablePtr; //pointer to the wavetable (to be created seperately to save memory/cpu)
 
-    float attackTime; //time it takes to get to full volume in seconds
-    float decayTime; //time it takes to get to 0 volume after attack in seconds
-    float lenght; //full length in seconds (attackTime + decayTime)
+    float attackTime = 0; //time it takes to get to full volume in seconds
+    float decayTime = 0; //time it takes to get to 0 volume after attack in seconds
+    float lenght = 0; //full length in seconds (attackTime + decayTime)
 };
 
