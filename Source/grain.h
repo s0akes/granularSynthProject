@@ -11,6 +11,7 @@
 
 #pragma once
 #include <JuceHeader.h>
+#include "waveTableClass.h"
 
 class grain
 {
@@ -24,17 +25,10 @@ private:
     float randomFequency; //the new frequency 
     float delta; //phase shift in samples for the given frequency
 
-    juce::AudioSampleBuffer* waveTable; //pointer to the wavetable (to be created seperately to save memory/cpu)
+    juce::AudioSampleBuffer* waveTablePtr; //pointer to the wavetable (to be created seperately to save memory/cpu)
 
     float attackTime; //time it takes to get to full volume in seconds
     float decayTime; //time it takes to get to 0 volume after attack in seconds
     float lenght; //full length in seconds (attackTime + decayTime)
 };
 
-class waveTable
-{
-public:
-    waveTable(); //this class will be able to manipulate the wavetable to be different waveshapes and will store the waveTable used by the grain
-
-    
-};

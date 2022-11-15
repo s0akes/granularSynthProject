@@ -9,6 +9,8 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include "grain.h"
+#include "waveTableClass.h"
 
 //==============================================================================
 /**
@@ -56,6 +58,8 @@ public:
     juce::AudioProcessorValueTreeState parameterTree;
 
 private:
+
+    juce::Synthesiser synth; //this is the synth object that holds all the voices and the sounds!!!! >>VERY IMPORTANT<<
 
     juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout();
     //==============================================================================

@@ -9,6 +9,7 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 
+
 //==============================================================================
 GranularSynthProjectAudioProcessor::GranularSynthProjectAudioProcessor()
 #ifndef JucePlugin_PreferredChannelConfigurations
@@ -22,6 +23,7 @@ GranularSynthProjectAudioProcessor::GranularSynthProjectAudioProcessor()
                        ), parameterTree(*this, nullptr, "Parameters", createParameterLayout())
 #endif
 {
+    synth.addSound(new waveTableClass);
 }
 
 GranularSynthProjectAudioProcessor::~GranularSynthProjectAudioProcessor()

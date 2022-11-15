@@ -12,11 +12,11 @@
 
 #include <JuceHeader.h>
 
-class sinSound: public juce::SynthesiserSound 
+class waveTableClass: public juce::SynthesiserSound 
 {
 public:
     
-    sinSound () 
+    waveTableClass () 
     {
         int tableSize = 512;
         waveTable.setSize(1, tableSize);
