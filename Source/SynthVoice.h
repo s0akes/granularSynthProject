@@ -20,6 +20,3 @@ synthVoice(double frequency, int amplitude, double duration);
 private:
 
 juce::AudioSampleBuffer* WT = nullptr;
-double delta = 0;
-double currentIndex = 0;
-double amplitude = 0;
