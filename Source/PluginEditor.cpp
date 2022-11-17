@@ -1,15 +1,6 @@
-/*
-  ==============================================================================
-
-    This file contains the basic framework code for a JUCE plugin editor.
-     TEST again
-  ==============================================================================
-*/
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
-//hello
-//hey hey!!
-//test
+
 //==============================================================================
 GranularSynthProjectAudioProcessorEditor::GranularSynthProjectAudioProcessorEditor (GranularSynthProjectAudioProcessor& p)
     : AudioProcessorEditor (&p), audioProcessor (p)

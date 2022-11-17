@@ -9,6 +9,8 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include "grain.h"
+#include "waveTableClass.h"
 
 //==============================================================================
 /**
@@ -53,7 +55,13 @@ public:
     void getStateInformation (juce::MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
 
+    juce::AudioProcessorValueTreeState parameterTree;
+
 private:
+
+    juce::Synthesiser synth; //this is the synth object that holds all the voices and the sounds!!!! >>VERY IMPORTANT<<
+
+    juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout();
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (GranularSynthProjectAudioProcessor)
 };
