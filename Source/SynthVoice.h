@@ -12,6 +12,7 @@
 #include <JuceHeader.h>
 #include "waveTableClass.h"
 
+class synthVoice{
 public:
 
 synthVoice(double frequency, int amplitude, double duration);
@@ -20,3 +21,6 @@ synthVoice(double frequency, int amplitude, double duration);
 private:
 
 juce::AudioSampleBuffer* WT = nullptr;
+
+
+}
