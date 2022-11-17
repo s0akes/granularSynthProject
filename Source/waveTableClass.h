@@ -1,18 +1,9 @@
-/*
-  ==============================================================================
-
-    waveTable.h
-    Created: 15 Nov 2022 3:05:14pm
-    Author:  Mace Noonan
-
-  ==============================================================================
-*/
 
 #pragma once
 
 #include <JuceHeader.h>
 
-class waveTableClass: public juce::SynthesiserSound 
+class waveTableClass: public juce::SynthesiserSound //this is the sinthesisersoud class
 {
 public:
     
