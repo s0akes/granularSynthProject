@@ -9,6 +9,8 @@
 */
 
 #pragma once
+#include <JuceHeader.h>
+#include "waveTableClass.h"
 
 //randomly trigger a grain store the grain in a vector
 // every sample check grain::isActive() 
@@ -18,17 +20,14 @@
 //output to buffer
 //done :)
 
-#include <JuceHeader.h>
-#include "waveTableClass.h"
-
+class synthVoice {
 public:
 
-synthVoice(double frequency, int amplitude, double duration);
+    synthVoice(double frequency, int amplitude, double duration);
 
 
 private:
 
-juce::AudioSampleBuffer* WT = nullptr;
-double delta = 0;
-double currentIndex = 0;
-double amplitude = 0;
+    juce::AudioSampleBuffer* WT = nullptr;
+
+};

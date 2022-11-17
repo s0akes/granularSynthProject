@@ -9,3 +9,7 @@
 */
 
 #include "SynthVoice.h"
+
+synthVoice::synthVoice(double frequency, int amplitude, double duration){
+  //take the noteon() and noteoff() data and send the respective amplitude, frequency and duration data on to the graining class
+}
