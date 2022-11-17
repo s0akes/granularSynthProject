@@ -60,5 +60,5 @@ double grain::getNextSample()
 
 bool grain::isActive()
 {
-    return false;
+    return false; //ask georgio about the envelope.isActive and weather to use the attack and release or attack and decay
 }
