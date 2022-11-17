@@ -195,8 +195,21 @@ void GranularSynthProjectAudioProcessor::setStateInformation (const void* data, 
 juce::AudioProcessorValueTreeState::ParameterLayout GranularSynthProjectAudioProcessor::createParameterLayout()
 {
     // Here the NormalisableRange will be set for each parameter
-    // Params will then be pushed bacl with smart pointers
-    // test
+    // Params will then be pushed back with smart pointers
+
+    juce::NormalisableRange<float> attackRange(0., 3., 0.001, 0.5);
+    juce::NormalisableRange<float> decayRange(0., 3., 0.001, 0.5);
+    juce::NormalisableRange<float> releaseRange(0., 3., 0.001, 0.5);
+
+    std::vector <std::unique_ptr<juce::RangedAudioParameter>> params;
+
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("ATTACK", "Attack", attackRange, 0.2f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("DECAY", "Decay", decayRange, 0.5f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("SUSTAIN", "Sustain", 0.0f, 1.0f, 0.5f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("RELEASE", "Release", releaseRange, 1.f));
+
+    return { params.begin(), params.end() };
+    
 }
 
 //==============================================================================
