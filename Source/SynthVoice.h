@@ -13,8 +13,9 @@
 #include "waveTableClass.h"
 
 //randomly trigger a grain store the grain in a vector
-// every sample check grain::isActive() 
-// if it is acitve grain::getNextSample
+//every sample check grain::isActive() 
+//if it is acitve grain::getNextSample
+//if it is not active then delete the grain
 //repeat for every grain in the vector
 //add the samples together
 //output to buffer
