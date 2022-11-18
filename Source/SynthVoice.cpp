@@ -15,21 +15,21 @@ SynthVoice::SynthVoice()
     
 }
 
-bool  SynthVoice::canPlaySound(juce::SynthesiserSound* sound) // [6]
+bool  SynthVoice::canPlaySound(juce::SynthesiserSound* sound) 
 {
 
 }
 
-void  SynthVoice::startNote(int midiNoteNumber, float velocity, juce::SynthesiserSound* sound, int currentPitchWheelPosition) // [7]
+void  SynthVoice::startNote(int midiNoteNumber, float velocity, juce::SynthesiserSound* sound, int currentPitchWheelPosition) 
 {
     soundPtr = sound;
     frequency = juce::MidiMessage::getMidiNoteInHertz(midiNoteNumber);
 
-
+    
 
 }
 
-void  SynthVoice::stopNote(float velocity, bool allowTailOff) // [8]
+void  SynthVoice::stopNote(float velocity, bool allowTailOff)
 {
 
 }
@@ -44,7 +44,7 @@ void  SynthVoice::controllerMoved(int controllerNumber, int newControllerValue)
 
 }
 
-void  SynthVoice::renderNextBlock(juce::AudioBuffer< float >& outputBuffer, int startSample, int numSamples) // [9]
+void  SynthVoice::renderNextBlock(juce::AudioBuffer< float >& outputBuffer, int startSample, int numSamples) 
 {
 
 }
