@@ -24,6 +24,9 @@ GranularSynthProjectAudioProcessor::GranularSynthProjectAudioProcessor()
 #endif
 {
     synth.addSound(new waveTableClass()); //wavetableclass is the synthesiser sound
+    
+    for (auto i = 0; i < 16; ++i) // create 4 voice polyphony by adding 4 voices to the synth object
+        synth.addVoice (new synthVoice(&parameterTree)); //voices are destroyed by the synth when not needed
 }
 
 GranularSynthProjectAudioProcessor::~GranularSynthProjectAudioProcessor()
