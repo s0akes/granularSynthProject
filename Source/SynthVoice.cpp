@@ -24,6 +24,7 @@ void  SynthVoice::startNote(int midiNoteNumber, float velocity, juce::Synthesise
 {
     soundPtr = sound;
 
+
 }
 
 void  SynthVoice::stopNote(float velocity, bool allowTailOff) // [8]

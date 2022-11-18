@@ -33,6 +33,11 @@ public:
     {
         return true;
     }
+
+    juce::AudioSampleBuffer* getWaveTablePtr()
+    {
+        return &waveTable;
+    }
     
     juce::AudioSampleBuffer waveTable;
 
