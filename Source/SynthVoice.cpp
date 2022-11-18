@@ -25,6 +25,23 @@ void  SynthVoice::startNote(int midiNoteNumber, float velocity, juce::Synthesise
     soundPtr = sound;
     frequency = juce::MidiMessage::getMidiNoteInHertz(midiNoteNumber);
 
+    vector<double> grainStore;
+    
+    for(int i = 0; i < grainStore.size() - 1; i++){
+
+      grain::grain(frequency, 0, soundPtr->getWaveTablePtr, 0)
+
+       if (!grain::isActive()){
+
+         grainStore[i] = nullptr;
+
+       } else {
+
+         grain::getNextSample();
+
+        }
+
+    }
     
 
 }
