@@ -95,8 +95,9 @@ void GranularSynthProjectAudioProcessor::changeProgramName (int index, const juc
 //==============================================================================
 void GranularSynthProjectAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
-    // Use this method as the place to do any pre-playback
-    // initialisation that you need..
+    delayBuffer.setSize(getTotalNumInputChannels(), sampleRate * samplesPerBlock);
+    samplerRate = sampleRate;
+    delayBuffer.clear();
 }
 
 void GranularSynthProjectAudioProcessor::releaseResources()
@@ -137,26 +138,60 @@ void GranularSynthProjectAudioProcessor::processBlock (juce::AudioBuffer<float>&
     auto totalNumInputChannels  = getTotalNumInputChannels();
     auto totalNumOutputChannels = getTotalNumOutputChannels();
 
-    // In case we have more outputs than inputs, this code clears any output
-    // channels that didn't contain input data, (because these aren't
-    // guaranteed to be empty - they may contain garbage).
-    // This is here to avoid people getting screaming feedback
-    // when they first compile a plugin, but obviously you don't need to keep
-    // this code if your algorithm always overwrites all the output channels.
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
 
-    // This is the place where you'd normally do the guts of your plugin's
-    // audio processing...
-    // Make sure to reset the state if your inner loop is processing
-    // the samples and the outer loop is handling the channels.
-    // Alternatively, you can process the samples with the channels
-    // interleaved by keeping the same state.
+    
     for (int channel = 0; channel < totalNumInputChannels; ++channel)
     {
-        auto* channelData = buffer.getWritePointer (channel);
+        fillDelayBuffer(channel, buffer.getNumSamples(), delayBuffer.getNumSamples(), buffer.getReadPointer(channel), delayBuffer.getReadPointer(channel));
+        getFromDelayBuffer(buffer, channel, buffer.getNumSamples(), delayBuffer.getNumSamples(), buffer.getReadPointer(channel), delayBuffer.getReadPointer(channel));
+        float* dryBuffer = buffer.getWritePointer(channel);
+        feedback(channel, buffer.getNumSamples(), delayBuffer.getNumSamples(), dryBuffer);
+    }
+    delayWritePointer += buffer.getNumSamples();
+    delayWritePointer %= delayBuffer.getNumSamples();
+}
 
-        // ..do something to the data...
+void GranularSynthProjectAudioProcessor::fillDelayBuffer(int channel, int bufferLength, int delayBufferLength, const float* bufferData, const float* delayBufferData)
+{
+    if (delayBufferLength > bufferLength + delayWritePointer)
+    {
+        delayBuffer.copyFromWithRamp(channel, delayWritePointer, bufferData, bufferLength, feedbackRate, feedbackRate);
+    }
+    else
+    {
+        delayBuffer.copyFromWithRamp(channel, delayWritePointer, bufferData, delayBufferLength - delayWritePointer, feedbackRate, feedbackRate);
+        delayBuffer.copyFromWithRamp(channel, 0, bufferData, bufferLength - delayBufferLength - delayWritePointer, feedbackRate, feedbackRate);
+    }
+}
+
+void GranularSynthProjectAudioProcessor::getFromDelayBuffer(juce::AudioBuffer<float>& buffer, int channel, int bufferLength, int delayBufferLength, const float* bufferData, const float* delayBufferData)
+{
+    int readPosition = (int)(delayBufferLength + delayWritePointer - (samplerRate * delayTime / 1000)) % delayBufferLength;
+    if (delayBufferLength > bufferLength + readPosition)
+    {
+        buffer.addFromWithRamp(channel, 0, delayBufferData + readPosition, bufferLength, dry, dry);
+    }
+    else
+    {
+        int remain = delayBufferLength - readPosition;
+        buffer.addFromWithRamp(channel, 0, delayBufferData + readPosition, remain, dry, dry);
+        buffer.addFromWithRamp(channel, remain, delayBufferData, bufferLength - remain, dry, dry);
+    }
+}
+
+void GranularSynthProjectAudioProcessor::feedback(int channel, int bufferLength,  int delayBufferLength, float* dryBuffer)
+{
+    if (delayBufferLength > bufferLength + delayWritePointer)
+    {
+        delayBuffer.addFromWithRamp(channel, delayWritePointer, dryBuffer, bufferLength, feedbackRate, feedbackRate);
+    }
+    else
+    {
+        int remain = delayBufferLength - delayWritePointer;
+        delayBuffer.addFromWithRamp(channel, remain, dryBuffer, remain, feedbackRate, feedbackRate);
+        delayBuffer.addFromWithRamp(channel, 0, dryBuffer, bufferLength - remain, feedbackRate, feedbackRate);
     }
 }
 
@@ -197,8 +232,21 @@ void GranularSynthProjectAudioProcessor::setStateInformation (const void* data, 
 juce::AudioProcessorValueTreeState::ParameterLayout GranularSynthProjectAudioProcessor::createParameterLayout()
 {
     // Here the NormalisableRange will be set for each parameter
-    // Params will then be pushed bacl with smart pointers
-    // test
+    // Params will then be pushed back with smart pointers
+
+    juce::NormalisableRange<float> attackRange(0., 3., 0.001, 0.5);
+    juce::NormalisableRange<float> decayRange(0., 3., 0.001, 0.5);
+    juce::NormalisableRange<float> releaseRange(0., 3., 0.001, 0.5);
+
+    std::vector <std::unique_ptr<juce::RangedAudioParameter>> params;
+
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("ATTACK", "Attack", attackRange, 0.2f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("DECAY", "Decay", decayRange, 0.5f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("SUSTAIN", "Sustain", 0.0f, 1.0f, 0.5f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("RELEASE", "Release", releaseRange, 1.f));
+
+    return { params.begin(), params.end() };
+    
 }
 
 //==============================================================================
