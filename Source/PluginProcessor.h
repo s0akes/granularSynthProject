@@ -54,6 +54,10 @@ public:
     //==============================================================================
     void getStateInformation (juce::MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
+    
+    void fillDelayBuffer(int channel, int bufferLength, int delayBufferLength, const float* bufferData, const float* delayBufferData);
+    void getFromDelayBuffer(juce::AudioBuffer<float>& buffer, int channel, int bufferLength, int delayBufferLength, const float* bufferData, const float* delayBufferData);
+    void feedback(int channel, int bufferLength, int delayBufferLength, float* dryBuffer);
 
     juce::AudioProcessorValueTreeState parameterTree;
 
@@ -62,6 +66,12 @@ private:
     juce::Synthesiser synth; //this is the synth object that holds all the voices and the sounds!!!! >>VERY IMPORTANT<<
 
     juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout();
+    
+    juce::AudioBuffer<float> delayBuffer;
+    int delayWritePointer = 0;
+    int delayTime = 200; //ms
+    float feedbackRate = 0.4;
+    int samplerRate;
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (GranularSynthProjectAudioProcessor)
 };

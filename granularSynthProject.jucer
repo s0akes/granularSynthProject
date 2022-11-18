@@ -2,7 +2,8 @@
 
 <JUCERPROJECT id="R1LDAh" name="granularSynthProject" projectType="audioplug"
               useAppConfig="0" addUsingNamespaceToJuceHeader="0" displaySplashScreen="1"
-              jucerFormatVersion="1" pluginFormats="buildVST3" pluginCharacteristicsValue="pluginIsSynth,pluginWantsMidiIn">
+              jucerFormatVersion="1" pluginFormats="buildVST3" pluginCharacteristicsValue="pluginWantsMidiIn"
+              companyName="CAMT">
   <MAINGROUP id="tg7ZWf" name="granularSynthProject">
     <GROUP id="{AB942ACC-9B40-7C89-D2F3-790A0ECEA2FD}" name="Source">
       <FILE id="yoFD1v" name="grain.cpp" compile="1" resource="0" file="Source/grain.cpp"/>
