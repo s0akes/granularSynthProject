@@ -23,7 +23,7 @@ GranularSynthProjectAudioProcessor::GranularSynthProjectAudioProcessor()
                        ), parameterTree(*this, nullptr, "Parameters", createParameterLayout())
 #endif
 {
-    synth.addSound(new waveTableClass); //wavetableclass is the synthesiser sound
+    synth.addSound(new waveTableClass()); //wavetableclass is the synthesiser sound
 }
 
 GranularSynthProjectAudioProcessor::~GranularSynthProjectAudioProcessor()

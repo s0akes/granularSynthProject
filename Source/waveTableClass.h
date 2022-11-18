@@ -13,7 +13,7 @@ public:
         waveTable.setSize(1, tableSize);
         auto data = waveTable.getWritePointer(0);
         
-        auto angleDelta = juce::MathConstants<double>::twoPi / (double)(tableSize);
+        auto angleDelta = juce::MathConstants<double>::twoPi / (double)(tableSize); //coppied this lol
         auto currentAngle = 0.0;
         
         for (unsigned int i = 0; i < tableSize; ++i)
