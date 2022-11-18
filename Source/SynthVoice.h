@@ -35,10 +35,11 @@ public:
   void  renderNextBlock (juce::AudioBuffer< float > &outputBuffer, int startSample, int numSamples) override;
 
 private:
+    //dont need this
 
-  juce::AudioSampleBuffer* WT = nullptr; //wavetable pointer
-  double delta = 0; // delta angle from freq and sr
-  double currentIndex = 0; // index for wavetable playback
+  //juce::AudioSampleBuffer* WT = nullptr; //wavetable pointer
+  //double delta = 0; // delta angle from freq and sr
+  //double currentIndex = 0; // index for wavetable playback
   double ampl = 0;
 
 };
