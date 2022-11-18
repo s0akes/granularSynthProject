@@ -18,6 +18,8 @@ synthVoice::synthVoice(double frequency, int amplitude, double duration){
 
   bool  canPlaySound (juce::SynthesiserSound * sound){
 
+      return (dynamic_cast<waveTableClass*>(sound) != nullptr) ;
+      
   }
     
   void  startNote (int midiNoteNumber, float velocity, juce::SynthesiserSound *sound, int currentPitchWheelPosition){
