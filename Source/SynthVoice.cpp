@@ -10,40 +10,40 @@
 
 #include "SynthVoice.h"
 
-sinVoice::sinVoice()
+SynthVoice::SynthVoice()
 {
     
 }
 
-bool  sinVoice::canPlaySound(juce::SynthesiserSound* sound) // [6]
+bool  SynthVoice::canPlaySound(juce::SynthesiserSound* sound) // [6]
 {
 
 }
 
-void  sinVoice::startNote(int midiNoteNumber, float velocity, juce::SynthesiserSound* sound, int currentPitchWheelPosition) // [7]
+void  SynthVoice::startNote(int midiNoteNumber, float velocity, juce::SynthesiserSound* sound, int currentPitchWheelPosition) // [7]
+{
+    soundPtr = sound;
+
+}
+
+void  SynthVoice::stopNote(float velocity, bool allowTailOff) // [8]
 {
 
 }
 
-void  sinVoice::stopNote(float velocity, bool allowTailOff) // [8]
+void  SynthVoice::pitchWheelMoved(int newPitchWheelValue)
 {
 
 }
 
-void  sinVoice::pitchWheelMoved(int newPitchWheelValue)
+void  SynthVoice::controllerMoved(int controllerNumber, int newControllerValue)
 {
 
 }
 
-void  sinVoice::controllerMoved(int controllerNumber, int newControllerValue)
+void  SynthVoice::renderNextBlock(juce::AudioBuffer< float >& outputBuffer, int startSample, int numSamples) // [9]
 {
 
-}
-
-void  sinVoice::renderNextBlock(juce::AudioBuffer< float >& outputBuffer, int startSample, int numSamples) // [9]
-{
-
-    }
 }
 
 

@@ -21,10 +21,10 @@
 //output to buffer
 //done :)
 
-class sinVoice : public juce::SynthesiserVoice // [3] Create voice class
+class SynthVoice : public juce::SynthesiserVoice // [3] Create voice class
 {
 public:
-    sinVoice();
+    SynthVoice();
 
     bool  canPlaySound(juce::SynthesiserSound* sound) override;
 
@@ -41,6 +41,8 @@ public:
 private:
 
     double amplitude = 0;
+    double frequency = 0;
+    juce::SynthesiserSound* soundPtr;
 
 
 };
