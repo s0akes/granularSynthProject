@@ -12,7 +12,7 @@
 
 sinVoice::sinVoice()
 {
-    envelope.setSampleRate(getSampleRate());
+    
 }
 
 bool  sinVoice::canPlaySound(juce::SynthesiserSound* sound) // [6]
