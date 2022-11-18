@@ -47,7 +47,7 @@ double grain::getNextSample()
     double V1 = waveTablePtr->getSample(0, index1);
     V = frac * V1 + (1 - frac) * V0; //interpolated value
 
-    V *= amplitude * envelope.getNextSample();
+    //V *= amplitude * envelope.getNextSample();
 
     currentIndex += delta; //advance index
     if (currentIndex >= (double)tableSize) //wrap at the end of the wavetable
@@ -60,5 +60,5 @@ double grain::getNextSample()
 
 bool grain::isActive()
 {
-    return false; //ask georgio about the envelope.isActive and weather to use the attack and release or attack and decay
+    return true; //ask georgio about the envelope.isActive and weather to use the attack and release or attack and decay
 }
