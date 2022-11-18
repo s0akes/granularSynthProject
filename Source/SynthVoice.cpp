@@ -18,6 +18,8 @@ synthVoice::synthVoice(double frequency, int amplitude, double duration){
 
   bool  canPlaySound (juce::SynthesiserSound * sound){
 
+      return (dynamic_cast<waveTableClass*>(sound) != nullptr) ;
+      
   }
     
   void  startNote (int midiNoteNumber, float velocity, juce::SynthesiserSound *sound, int currentPitchWheelPosition){
@@ -42,7 +44,46 @@ synthVoice::synthVoice(double frequency, int amplitude, double duration){
   }
     
   void  renderNextBlock (juce::AudioBuffer< float > &outputBuffer, int startSample, int numSamples){
+
     //this is where to implement the list of things below.
+
+     if (!isVoiceActive() || waveTableClass == nullptr){
+
+        return;
+
+     }  
+    
+    for (int i = startSample; i<numSamples+startSample; i++){
+        
+        double vel;
+
+        int tableSize = WT->getNumSamples();
+
+        int index0 = (int) currentIndex;
+        int index1;
+        if (index0 == tablesize - 1){
+          index1 = 0;
+        } else {
+          index1 = index0 + 1
+        }
+
+        double frac = currentIndex - (double) index0;
+        double vel0 = WT->getSample(0, index0);
+        double vel1 = WT->getSample(0, index1);
+        vel = frac * vel1 + (1 - frac) * vel0;
+
+        vel *= ampl;
+
+        currentIndex += delta;
+        if (currentIndex >= (double)tableSize){
+          currentIndex -= tableSize;
+        }
+
+        for(int j = 0; j < outputBuffer.getNumChannels(); j++){
+          outputBuffer.addSample(j, i, vel);
+        }
+
+    }
   }
 
 }
