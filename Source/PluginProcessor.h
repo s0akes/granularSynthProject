@@ -69,9 +69,13 @@ private:
     
     juce::AudioBuffer<float> delayBuffer;
     int delayWritePointer = 0;
-    int delayTime = 200; //ms
-    float feedbackRate = 0.4;
     int samplerRate;
+   
+    // delay parameters
+    int delayTime = 100;
+    float feedbackRate = 0.8;
+    float dry = 1.0;
+    
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (GranularSynthProjectAudioProcessor)
 };

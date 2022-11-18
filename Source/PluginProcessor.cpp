@@ -95,7 +95,7 @@ void GranularSynthProjectAudioProcessor::changeProgramName (int index, const juc
 //==============================================================================
 void GranularSynthProjectAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
-    delayBuffer.setSize(getTotalNumInputChannels(), (sampleRate + samplesPerBlock)* 2);
+    delayBuffer.setSize(getTotalNumInputChannels(), sampleRate * samplesPerBlock);
     samplerRate = sampleRate;
     delayBuffer.clear();
 }
@@ -144,9 +144,9 @@ void GranularSynthProjectAudioProcessor::processBlock (juce::AudioBuffer<float>&
     
     for (int channel = 0; channel < totalNumInputChannels; ++channel)
     {
-        float* dryBuffer = buffer.getWritePointer(channel);
         fillDelayBuffer(channel, buffer.getNumSamples(), delayBuffer.getNumSamples(), buffer.getReadPointer(channel), delayBuffer.getReadPointer(channel));
         getFromDelayBuffer(buffer, channel, buffer.getNumSamples(), delayBuffer.getNumSamples(), buffer.getReadPointer(channel), delayBuffer.getReadPointer(channel));
+        float* dryBuffer = buffer.getWritePointer(channel);
         feedback(channel, buffer.getNumSamples(), delayBuffer.getNumSamples(), dryBuffer);
     }
     delayWritePointer += buffer.getNumSamples();
@@ -171,13 +171,13 @@ void GranularSynthProjectAudioProcessor::getFromDelayBuffer(juce::AudioBuffer<fl
     int readPosition = (int)(delayBufferLength + delayWritePointer - (samplerRate * delayTime / 1000)) % delayBufferLength;
     if (delayBufferLength > bufferLength + readPosition)
     {
-        buffer.copyFrom(channel, 0, delayBufferData + readPosition, bufferLength);
+        buffer.addFromWithRamp(channel, 0, delayBufferData + readPosition, bufferLength, dry, dry);
     }
     else
     {
         int remain = delayBufferLength - readPosition;
-        buffer.copyFrom(channel, 0, delayBufferData + readPosition, remain);
-        buffer.copyFrom(channel, remain, delayBufferData, bufferLength - remain);
+        buffer.addFromWithRamp(channel, 0, delayBufferData + readPosition, remain, dry, dry);
+        buffer.addFromWithRamp(channel, remain, delayBufferData, bufferLength - remain, dry, dry);
     }
 }
 
