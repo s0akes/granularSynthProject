@@ -38,6 +38,8 @@ public:
 
     void  renderNextBlock(juce::AudioBuffer< float >& outputBuffer, int startSample, int numSamples) override;
 
+    double getFrequency();
+
 private:
 
     double amplitude = 0;
