@@ -21,7 +21,8 @@ synthVoice::synthVoice(double frequency, int amplitude, double duration){
   }
     
   void  startNote (int midiNoteNumber, float velocity, juce::SynthesiserSound *sound, int currentPitchWheelPosition){
-
+    //you want to start the ADSR here, dont need any of this wavetable stuff
+    //the ADSR is going to jacks random stuff to trigger grains in the renderNextBlock
     WT = &(dynamic_cast<sinSound*>(sound) -> waveTable);
     
     auto f = juce::MidiMessage::getMidiNoteInHertz(midiNoteNumber);
@@ -41,7 +42,7 @@ synthVoice::synthVoice(double frequency, int amplitude, double duration){
   }
     
   void  renderNextBlock (juce::AudioBuffer< float > &outputBuffer, int startSample, int numSamples){
-
+    //this is where to implement the list of things below.
   }
 
 }
