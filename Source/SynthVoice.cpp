@@ -10,45 +10,43 @@
 
 #include "SynthVoice.h"
 
-synthVoice::synthVoice(double frequency, int amplitude, double duration){
-  //take the noteon() and noteoff() data and send the respective amplitude, frequency and duration data on to the graining class
-  void  synthVoice (double freq, int ampl, double time){
+sinVoice::sinVoice()
+{
+    envelope.setSampleRate(getSampleRate());
+}
 
-  }
-
-  bool  canPlaySound (juce::SynthesiserSound * sound){
-
-      return (dynamic_cast<waveTableClass*>(sound) != nullptr) ;
-      
-  }
-    
-  void  startNote (int midiNoteNumber, float velocity, juce::SynthesiserSound *sound, int currentPitchWheelPosition){
-    //you want to start the ADSR here, dont need any of this wavetable stuff
-    //the ADSR is going to jacks random stuff to trigger grains in the renderNextBlock
-    WT = &(dynamic_cast<sinSound*>(sound) -> waveTable);
-    
-    auto f = juce::MidiMessage::getMidiNoteInHertz(midiNoteNumber);
-    delta = WT->getNumSamples() * f / getSampleRate();
-    
-    amplitude = velocity * 0.2;
-     
-    currentIndex = 0;
-
-  }
-    
-  void  stopNote (float velocity, bool allowTailOff){
-
-    amplitude = 0.0;
-    clearCurrentNote();
-
-  }
-    
-  void  renderNextBlock (juce::AudioBuffer< float > &outputBuffer, int startSample, int numSamples){
-
-   
-  }
+bool  sinVoice::canPlaySound(juce::SynthesiserSound* sound) // [6]
+{
 
 }
+
+void  sinVoice::startNote(int midiNoteNumber, float velocity, juce::SynthesiserSound* sound, int currentPitchWheelPosition) // [7]
+{
+
+}
+
+void  sinVoice::stopNote(float velocity, bool allowTailOff) // [8]
+{
+
+}
+
+void  sinVoice::pitchWheelMoved(int newPitchWheelValue)
+{
+
+}
+
+void  sinVoice::controllerMoved(int controllerNumber, int newControllerValue)
+{
+
+}
+
+void  sinVoice::renderNextBlock(juce::AudioBuffer< float >& outputBuffer, int startSample, int numSamples) // [9]
+{
+
+    }
+}
+
+
 
 
 //randomly trigger a grain store the grain in a vector
