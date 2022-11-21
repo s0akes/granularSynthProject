@@ -8,6 +8,7 @@
 
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
+#include <iostream>
 
 //==============================================================================
 GranularSynthProjectAudioProcessor::GranularSynthProjectAudioProcessor()
@@ -19,9 +20,10 @@ GranularSynthProjectAudioProcessor::GranularSynthProjectAudioProcessor()
                       #endif
                        .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
                      #endif
-                       )
+                       ), parameterTree(*this, nullptr, "Parameters", createParameterLayout())
 #endif
 {
+    synth.addSound(new waveTableClass);
 }
 
 GranularSynthProjectAudioProcessor::~GranularSynthProjectAudioProcessor()
@@ -175,12 +177,28 @@ void GranularSynthProjectAudioProcessor::getStateInformation (juce::MemoryBlock&
     // You should use this method to store your parameters in the memory block.
     // You could do that either as raw data, or use the XML or ValueTree classes
     // as intermediaries to make it easy to save and load complex data.
+
+    juce::ValueTree state = parameterTree.copyState();
+    std::unique_ptr<juce::XmlElement> xml(state.createXml());
+    copyXmlToBinary(*xml, destData);
+
 }
 
 void GranularSynthProjectAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
 {
     // You should use this method to restore your parameters from this memory block,
     // whose contents will have been created by the getStateInformation() call.
+
+    std::unique_ptr<juce::XmlElement> xmlState(getXmlFromBinary(data, sizeInBytes)); // [PP 4.2]
+    if (xmlState.get() != nullptr && xmlState->hasTagName(parameterTree.state.getType()))
+        parameterTree.replaceState(juce::ValueTree::fromXml(*xmlState)); // [PP 4.3]
+}
+
+juce::AudioProcessorValueTreeState::ParameterLayout GranularSynthProjectAudioProcessor::createParameterLayout()
+{
+    // Here the NormalisableRange will be set for each parameter
+    // Params will then be pushed bacl with smart pointers
+    // test
 }
 
 //==============================================================================
