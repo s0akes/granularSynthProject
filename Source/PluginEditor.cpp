@@ -14,7 +14,23 @@ GranularSynthProjectAudioProcessorEditor::GranularSynthProjectAudioProcessorEdit
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
-    setSize (400, 300);
+
+    setSize(210, 635);
+
+    addAndMakeVisible(&randomSlider);
+    addAndMakeVisible(randomLabel);
+
+    randomSlider.setRange(0.01, 10, 0.01);
+    randomSlider.setValue(1);
+    randomSlider.setSkewFactorFromMidPoint(1);
+    randomSlider.setSliderStyle(juce::Slider::SliderStyle::Rotary);
+    randomSlider.setTextBoxStyle(juce::Slider::TextEntryBoxPosition::TextBoxBelow, false, 95, 28);
+    randomSlider.setColour(juce::Slider::rotarySliderFillColourId, juce::Colours::lightseagreen);
+
+    randomLabel.setFont(juce::Font(16.0f, juce::Font::bold));
+    randomLabel.setText("Random", juce::dontSendNotification);
+    randomLabel.setColour(juce::Label::textColourId, juce::Colours::lightseagreen);
+    randomLabel.setJustificationType(juce::Justification::centred);
 }
 
 GranularSynthProjectAudioProcessorEditor::~GranularSynthProjectAudioProcessorEditor()
