@@ -11,6 +11,8 @@
 #pragma once
 #include <JuceHeader.h>
 #include "waveTableClass.h"
+#include <vector>
+#include "grain.h"
 
 //randomly trigger a grain store the grain in a vector
 //every sample check grain::isActive() 
@@ -40,11 +42,15 @@ public:
 
     double getFrequency();
 
+    std::vector<grain> grainStore;
+
 private:
 
     double amplitude = 0;
     double frequency = 0;
     juce::SynthesiserSound* soundPtr;
+
+    
 
 
 };

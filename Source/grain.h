@@ -17,7 +17,9 @@ class grain
 {
 public:
     // g1 = new grain(frequecy, randomness, pointer to buffer);
-    grain(double frequency, double randomFactor, juce::AudioSampleBuffer* wt, float grainLength); //sets the frequency and the randomness of the grain
+    grain(); 
+    
+    void startGrain(double frequency, double randomFactor, juce::AudioSampleBuffer* wt, float grainLength); //sets the frequency and the randomness of the grain
 
     double getNextSample(); //returns the next sample based on the synth
 

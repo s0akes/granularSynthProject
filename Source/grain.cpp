@@ -11,7 +11,12 @@
 #include "grain.h"
 #include <math.h>
 
-grain::grain(double frequency, double randomFactor, juce::AudioSampleBuffer* wt, float grainLength)
+grain::grain()
+{
+
+}
+
+void grain::startGrain(double frequency, double randomFactor, juce::AudioSampleBuffer* wt, float grainLength)
 {
     //randomise the frequency and attack/decay
     //frequency = frequency + pow(2, randomFactor / 12*100) - 1; //randomFactor is the number of cents deviation
@@ -21,12 +26,12 @@ grain::grain(double frequency, double randomFactor, juce::AudioSampleBuffer* wt,
     envParam.release = 0.5;
     envelope.setParameters(envParam);
     envelope.noteOn();
-    
+
     //find delta based on the new frequency
     delta = wt->getNumSamples() * frequency / sampleRate;
 
     //set the wavetable
-    juce::AudioSampleBuffer* waveTablePtr = wt;
+    waveTablePtr = wt;
 }
 
 double grain::getNextSample()
@@ -48,7 +53,7 @@ double grain::getNextSample()
     V = frac * V1 + (1 - frac) * V0; //interpolated value
 
     V *= amplitude * envelope.getNextSample();
-    if (envelope.getNextSample() > 0.9)
+    if (envelope.getNextSample() > 0.99)
     {
         envelope.noteOff();
     }
