@@ -56,13 +56,37 @@ GranularSynthProjectAudioProcessorEditor::GranularSynthProjectAudioProcessorEdit
     randomLabel.setColour(juce::Label::textColourId, juce::Colours::lightseagreen);
     randomLabel.setJustificationType(juce::Justification::centred);
 
+    attackLabel.setFont(juce::Font(16.0f, juce::Font::bold)); //label for "Attack"
+    attackLabel.setText("Attack", juce::dontSendNotification);
+    attackLabel.setColour(juce::Label::textColourId, juce::Colours::lightseagreen);
+    attackLabel.setJustificationType(juce::Justification::centred);
+
+    decayLabel.setFont(juce::Font(16.0f, juce::Font::bold)); //label for "Decay"
+    decayLabel.setText("Decay", juce::dontSendNotification);
+    decayLabel.setColour(juce::Label::textColourId, juce::Colours::lightseagreen);
+    decayLabel.setJustificationType(juce::Justification::centred);
+
+    sussyLabel.setFont(juce::Font(16.0f, juce::Font::bold)); //label for "Sustain"
+    sussyLabel.setText("Sustain", juce::dontSendNotification);
+    sussyLabel.setColour(juce::Label::textColourId, juce::Colours::lightseagreen);
+    sussyLabel.setJustificationType(juce::Justification::centred);
+
+    releaseLabel.setFont(juce::Font(16.0f, juce::Font::bold)); //label for "Release"
+    releaseLabel.setText("Release", juce::dontSendNotification);
+    releaseLabel.setColour(juce::Label::textColourId, juce::Colours::lightseagreen);
+    releaseLabel.setJustificationType(juce::Justification::centred);
+
     addAndMakeVisible(&randomSlider); //makes sliders visible
     addAndMakeVisible(&attackSlider);
     addAndMakeVisible(&decaySlider);
     addAndMakeVisible(&sussySlider);
     addAndMakeVisible(&releaseSlider);
     
-    addAndMakeVisible(randomLabel); //makes labels visible
+    addAndMakeVisible(randomLabel);
+    addAndMakeVisible(attackLabel);
+    addAndMakeVisible(decayLabel);
+    addAndMakeVisible(sussyLabel);
+    addAndMakeVisible(releaseLabel);//makes labels visible
 
     attackSliderAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(
         audioProcessor.parameterTree,
@@ -107,6 +131,11 @@ void GranularSynthProjectAudioProcessorEditor::resized()
     // subcomponents in your editor..
 
     randomLabel.setBounds(20, 5, 95, 25);
+    attackLabel.setBounds(170, 5, 95, 25);
+    decayLabel.setBounds(320, 5, 95, 25);
+    sussyLabel.setBounds(470, 5, 95, 25);
+    releaseLabel.setBounds(620, 5, 95, 25);
+
     
     randomSlider.setBounds(20, 20, 95, 100);
     attackSlider.setBounds(170, 20, 95, 100);
