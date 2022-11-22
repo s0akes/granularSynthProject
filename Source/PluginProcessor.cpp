@@ -144,50 +144,55 @@ void GranularSynthProjectAudioProcessor::processBlock (juce::AudioBuffer<float>&
     
     for (int channel = 0; channel < totalNumInputChannels; ++channel)
     {
+        // creates the circular delay buffer, delay line and feedback effect
         fillDelayBuffer(channel, buffer.getNumSamples(), delayBuffer.getNumSamples(), buffer.getReadPointer(channel), delayBuffer.getReadPointer(channel));
         getFromDelayBuffer(buffer, channel, buffer.getNumSamples(), delayBuffer.getNumSamples(), buffer.getReadPointer(channel), delayBuffer.getReadPointer(channel));
         float* dryBuffer = buffer.getWritePointer(channel);
         feedback(channel, buffer.getNumSamples(), delayBuffer.getNumSamples(), dryBuffer);
     }
+    // increments the write pointer by a blocks worth of samples
     delayWritePointer += buffer.getNumSamples();
     delayWritePointer %= delayBuffer.getNumSamples();
 }
 
+// copies the the audio buffer into the delay buffer
 void GranularSynthProjectAudioProcessor::fillDelayBuffer(int channel, int bufferLength, int delayBufferLength, const float* bufferData, const float* delayBufferData)
 {
     if (delayBufferLength > bufferLength + delayWritePointer)
     {
         delayBuffer.copyFromWithRamp(channel, delayWritePointer, bufferData, bufferLength, feedbackRate, feedbackRate);
     }
-    else
+    else // handles the wrap-around of the circular buffer
     {
         delayBuffer.copyFromWithRamp(channel, delayWritePointer, bufferData, delayBufferLength - delayWritePointer, feedbackRate, feedbackRate);
         delayBuffer.copyFromWithRamp(channel, 0, bufferData, bufferLength - delayBufferLength - delayWritePointer, feedbackRate, feedbackRate);
     }
 }
 
+// adds a blocks worth of samples from the delay buffer to the audio buffer from a delayed read head
 void GranularSynthProjectAudioProcessor::getFromDelayBuffer(juce::AudioBuffer<float>& buffer, int channel, int bufferLength, int delayBufferLength, const float* bufferData, const float* delayBufferData)
 {
     int readPosition = (int)(delayBufferLength + delayWritePointer - (samplerRate * delayTime / 1000)) % delayBufferLength;
     if (delayBufferLength > bufferLength + readPosition)
     {
-        buffer.addFromWithRamp(channel, 0, delayBufferData + readPosition, bufferLength, dry, dry);
+        buffer.addFromWithRamp(channel, 0, delayBufferData + readPosition, bufferLength, wetMix, wetMix);
     }
-    else
+    else // handles the wrap-around of the circular buffer
     {
         int remain = delayBufferLength - readPosition;
-        buffer.addFromWithRamp(channel, 0, delayBufferData + readPosition, remain, dry, dry);
-        buffer.addFromWithRamp(channel, remain, delayBufferData, bufferLength - remain, dry, dry);
+        buffer.addFromWithRamp(channel, 0, delayBufferData + readPosition, remain, wetMix, wetMix);
+        buffer.addFromWithRamp(channel, remain, delayBufferData, bufferLength - remain, wetMix, wetMix);
     }
 }
 
+// feeds a dry version of the audio buffer back into the delay buffer to create a feedback effect
 void GranularSynthProjectAudioProcessor::feedback(int channel, int bufferLength,  int delayBufferLength, float* dryBuffer)
 {
     if (delayBufferLength > bufferLength + delayWritePointer)
     {
         delayBuffer.addFromWithRamp(channel, delayWritePointer, dryBuffer, bufferLength, feedbackRate, feedbackRate);
     }
-    else
+    else // handles the wrap-around of the circular buffer
     {
         int remain = delayBufferLength - delayWritePointer;
         delayBuffer.addFromWithRamp(channel, remain, dryBuffer, remain, feedbackRate, feedbackRate);
