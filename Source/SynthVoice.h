@@ -24,7 +24,7 @@
 //done :)
 
 
-//Dan's job is to 
+//Dan's job is to triggering grains in renderNextBlock and add to the output buffer
 
 class SynthVoice : public juce::SynthesiserVoice // [3] Create voice class
 {
@@ -45,7 +45,7 @@ public:
 
     double getFrequency();
 
-    std::vector<grain> grainStore [100];
+    std::vector<grain> grainStore;
 
 private:
 

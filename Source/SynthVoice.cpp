@@ -13,13 +13,10 @@
 
 SynthVoice::SynthVoice()
 {
+  for (int i = 0; i < 100; i++){
+    grainStore.push_back(grain());
+  }
 
-
-  for(int i = 0; i < grainStore.size() - 1; i++){
-      
-    grain::grain(frequency, 0, soundPtr->getWaveTablePtr, 0);
-
-    
 }
 
 }
@@ -59,7 +56,9 @@ void  SynthVoice::controllerMoved(int controllerNumber, int newControllerValue)
 
 void  SynthVoice::renderNextBlock(juce::AudioBuffer< float >& outputBuffer, int startSample, int numSamples) 
 {
+  for (int i = 0; i = grainStore.size(); i++){
 
+  }
 }
 
 double getFrequency()
