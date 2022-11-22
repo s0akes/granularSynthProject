@@ -57,7 +57,8 @@ void  SynthVoice::stopNote(float velocity, bool allowTailOff)
             }
 
     }
-    
+ }   
+}
 
 void  SynthVoice::pitchWheelMoved(int newPitchWheelValue)
 {
