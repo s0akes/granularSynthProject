@@ -37,6 +37,7 @@ private:
     juce::Label delayTimeLabel;
     juce::Label feedbackRateLabel;
     juce::Label wetMixLabel;
+    juce::Label midiInputListLabel;
 
 
     juce::Slider randomSlider;
@@ -47,6 +48,8 @@ private:
     juce::Slider delayTime;
     juce::Slider feedbackRate;
     juce::Slider wetMix;
+
+    juce::ComboBox midiInputList;
 
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> attackSliderAttachment;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> decaySliderAttachment;

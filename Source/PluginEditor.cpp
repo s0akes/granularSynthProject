@@ -55,19 +55,19 @@ GranularSynthProjectAudioProcessorEditor::GranularSynthProjectAudioProcessorEdit
     delayTime.setSkewFactorFromMidPoint(500);
     delayTime.setSliderStyle(juce::Slider::SliderStyle::Rotary);
     delayTime.setTextBoxStyle(juce::Slider::TextEntryBoxPosition::TextBoxBelow, false, 95, 28);
-    delayTime.setColour(juce::Slider::rotarySliderFillColourId, juce::Colours::lightskyblue);
+    delayTime.setColour(juce::Slider::rotarySliderFillColourId, juce::Colours::orange);
 
     feedbackRate.setRange(0.1,0.99,0.01); //creates the slider "Feedback Rate"
     feedbackRate.setValue(0.1);
     feedbackRate.setSliderStyle(juce::Slider::SliderStyle::Rotary);
     feedbackRate.setTextBoxStyle(juce::Slider::TextEntryBoxPosition::TextBoxBelow, false, 95, 28);
-    feedbackRate.setColour(juce::Slider::rotarySliderFillColourId, juce::Colours::lightskyblue);
+    feedbackRate.setColour(juce::Slider::rotarySliderFillColourId, juce::Colours::orange);
 
     wetMix.setRange(0., 1., 0.01); //creates the slider "Wet Mix"
     wetMix.setValue(0.);
     wetMix.setSliderStyle(juce::Slider::SliderStyle::Rotary);
     wetMix.setTextBoxStyle(juce::Slider::TextEntryBoxPosition::TextBoxBelow, false, 95, 28);
-    wetMix.setColour(juce::Slider::rotarySliderFillColourId, juce::Colours::lightskyblue);
+    wetMix.setColour(juce::Slider::rotarySliderFillColourId, juce::Colours::orange);
 
     randomLabel.setFont(juce::Font(16.0f, juce::Font::bold)); //label for "Random"
     randomLabel.setText("Random", juce::dontSendNotification);
@@ -96,17 +96,17 @@ GranularSynthProjectAudioProcessorEditor::GranularSynthProjectAudioProcessorEdit
 
     delayTimeLabel.setFont(juce::Font(16.0f, juce::Font::bold)); //label for "Delay Time"
     delayTimeLabel.setText("Delay Time (ms)", juce::dontSendNotification);
-    delayTimeLabel.setColour(juce::Label::textColourId, juce::Colours::lightskyblue);
+    delayTimeLabel.setColour(juce::Label::textColourId, juce::Colours::orange);
     delayTimeLabel.setJustificationType(juce::Justification::centred);
 
     feedbackRateLabel.setFont(juce::Font(16.0f, juce::Font::bold)); //label for "Feedback Rate"
     feedbackRateLabel.setText("Feedback Rate", juce::dontSendNotification);
-    feedbackRateLabel.setColour(juce::Label::textColourId, juce::Colours::lightskyblue);
+    feedbackRateLabel.setColour(juce::Label::textColourId, juce::Colours::orange);
     feedbackRateLabel.setJustificationType(juce::Justification::centred);
 
     wetMixLabel.setFont(juce::Font(16.0f, juce::Font::bold)); //label for "Wet Mix"
     wetMixLabel.setText("Wet Mix %", juce::dontSendNotification);
-    wetMixLabel.setColour(juce::Label::textColourId, juce::Colours::lightskyblue);
+    wetMixLabel.setColour(juce::Label::textColourId, juce::Colours::orange);
     wetMixLabel.setJustificationType(juce::Justification::centred);
 
 
@@ -127,6 +127,14 @@ GranularSynthProjectAudioProcessorEditor::GranularSynthProjectAudioProcessorEdit
     addAndMakeVisible(delayTimeLabel);
     addAndMakeVisible(feedbackRateLabel);
     addAndMakeVisible(wetMixLabel);
+
+    addAndMakeVisible(midiInputListLabel);
+    midiInputListLabel.setText("MIDI Input:", juce::dontSendNotification);
+    midiInputListLabel.attachToComponent(&midiInputList, true);
+
+    addAndMakeVisible(midiInputList);
+    midiInputList.setTextWhenNoChoicesAvailable("No MIDI Inputs Enabled");
+    auto midiInputs = juce::MidiInput::getAvailableDevices();
 
     attackSliderAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(
         audioProcessor.parameterTree,
@@ -169,6 +177,7 @@ void GranularSynthProjectAudioProcessorEditor::resized()
 {
     // This is generally where you'll want to lay out the positions of any
     // subcomponents in your editor..
+    auto area = getLocalBounds();
 
     randomLabel.setBounds(20, 5, 95, 25);
     attackLabel.setBounds(170, 5, 95, 25);
@@ -187,4 +196,7 @@ void GranularSynthProjectAudioProcessorEditor::resized()
     delayTime.setBounds(20, 175, 95, 100);
     feedbackRate.setBounds(170, 175, 95, 100);
     wetMix.setBounds(320, 175, 95, 100);
+
+    //midiInputList.setBounds(area.removeFromTop(36).removeFromRight(getWidth() - 150).reduced(8));
+    midiInputList.setBounds(125, 279, 570, 18);
 }
