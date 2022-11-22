@@ -34,12 +34,19 @@ private:
     juce::Label decayLabel;
     juce::Label sussyLabel;
     juce::Label releaseLabel;
+    juce::Label delayTimeLabel;
+    juce::Label feedbackRateLabel;
+    juce::Label wetMixLabel;
+
 
     juce::Slider randomSlider;
     juce::Slider attackSlider;
     juce::Slider decaySlider;
     juce::Slider sussySlider;
     juce::Slider releaseSlider;
+    juce::Slider delayTime;
+    juce::Slider feedbackRate;
+    juce::Slider wetMix;
 
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> attackSliderAttachment;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> decaySliderAttachment;
