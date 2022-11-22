@@ -23,6 +23,9 @@
 //output to buffer
 //done :)
 
+
+//Dan's job is to triggering grains in renderNextBlock and add to the output buffer
+
 class SynthVoice : public juce::SynthesiserVoice // [3] Create voice class
 {
 public:
@@ -49,6 +52,7 @@ private:
     double amplitude = 0;
     double frequency = 0;
     juce::SynthesiserSound* soundPtr;
+    // bool ean variable active flag
 
     
 
