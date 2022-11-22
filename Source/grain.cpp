@@ -16,9 +16,9 @@ grain::grain(double frequency, double randomFactor, juce::AudioSampleBuffer* wt,
     //randomise the frequency and attack/decay
     //frequency = frequency + pow(2, randomFactor / 12*100) - 1; //randomFactor is the number of cents deviation
     envParam.attack = 0.1;
-    envParam.decay = 0.5;
+    envParam.decay = 0.0;
     envParam.sustain = 0.0;
-    envParam.release = 0.0;
+    envParam.release = 0.5;
     envelope.setParameters(envParam);
     envelope.noteOn();
     
@@ -47,7 +47,11 @@ double grain::getNextSample()
     double V1 = waveTablePtr->getSample(0, index1);
     V = frac * V1 + (1 - frac) * V0; //interpolated value
 
-    //V *= amplitude * envelope.getNextSample();
+    V *= amplitude * envelope.getNextSample();
+    if (envelope.getNextSample() > 0.9)
+    {
+        envelope.noteOff();
+    }
 
     currentIndex += delta; //advance index
     if (currentIndex >= (double)tableSize) //wrap at the end of the wavetable
@@ -60,5 +64,5 @@ double grain::getNextSample()
 
 bool grain::isActive()
 {
-    return true; //ask georgio about the envelope.isActive and weather to use the attack and release or attack and decay
+    return envelope.isActive(); //returns false once envelope release phase is over, envlope is started in the constructor
 }

@@ -9,6 +9,7 @@
 */
 
 #include "SynthVoice.h"
+#include <vector>
 
 SynthVoice::SynthVoice()
 {
@@ -29,7 +30,7 @@ void  SynthVoice::startNote(int midiNoteNumber, float velocity, juce::Synthesise
     
     for(int i = 0; i < grainStore.size() - 1; i++){
 
-      grain::grain(frequency, 0, soundPtr->getWaveTablePtr, 0)
+        grain::grain(frequency, 0, soundPtr->getWaveTablePtr, 0);
 
        if (!grain::isActive()){
 
@@ -70,7 +71,7 @@ void  SynthVoice::renderNextBlock(juce::AudioBuffer< float >& outputBuffer, int 
 
 double getFrequency()
 {
-  return frequency;
+    return frequency;
 }
 
 

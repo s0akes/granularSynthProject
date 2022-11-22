@@ -9,6 +9,7 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 #include <iostream>
+#include "SynthVoice.h"
 
 //==============================================================================
 GranularSynthProjectAudioProcessor::GranularSynthProjectAudioProcessor()
@@ -26,7 +27,7 @@ GranularSynthProjectAudioProcessor::GranularSynthProjectAudioProcessor()
     synth.addSound(new waveTableClass()); //wavetableclass is the synthesiser sound
     
     for (auto i = 0; i < 16; ++i) // create 4 voice polyphony by adding 4 voices to the synth object
-        synth.addVoice (new synthVoice(&parameterTree)); //voices are destroyed by the synth when not needed
+        synth.addVoice (new SynthVoice(&parameterTree)); //voices are destroyed by the synth when not needed
 }
 
 GranularSynthProjectAudioProcessor::~GranularSynthProjectAudioProcessor()
