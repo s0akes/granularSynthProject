@@ -20,10 +20,10 @@ void grain::startGrain(double frequency, double randomFactor, juce::AudioSampleB
 {
     //randomise the frequency and attack/decay
     //frequency = frequency + pow(2, randomFactor / 12*100) - 1; //randomFactor is the number of cents deviation
-    envParam.attack = 0.1;
+    envParam.attack = 0.0;
     envParam.decay = 0.0;
     envParam.sustain = 0.0;
-    envParam.release = 0.5;
+    envParam.release = 1000.0;
     envelope.setParameters(envParam);
     envelope.noteOn();
 
