@@ -28,6 +28,7 @@ private:
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
     GranularSynthProjectAudioProcessor& audioProcessor;
+    
     juce::Label randomLabel;
     juce::Label attackLabel;
     juce::Label decayLabel;
@@ -39,6 +40,11 @@ private:
     juce::Slider decaySlider;
     juce::Slider sussySlider;
     juce::Slider releaseSlider;
+
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> attackSliderAttachment;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> decaySliderAttachment;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> sussySliderAttachment;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> releaseSliderAttachment;
 
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (GranularSynthProjectAudioProcessorEditor)

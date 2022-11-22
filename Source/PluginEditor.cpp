@@ -63,6 +63,28 @@ GranularSynthProjectAudioProcessorEditor::GranularSynthProjectAudioProcessorEdit
     addAndMakeVisible(&releaseSlider);
     
     addAndMakeVisible(randomLabel); //makes labels visible
+
+    attackSliderAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(
+        audioProcessor.parameterTree,
+        "ATTACK",
+        attackSlider);
+
+    decaySliderAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(
+        audioProcessor.parameterTree,
+        "DECAY",
+        decaySlider);
+
+    sussySliderAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(
+        audioProcessor.parameterTree,
+        "SUSTAIN",
+        sussySlider);
+
+    releaseSliderAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(
+        audioProcessor.parameterTree,
+        "RELEASE",
+        releaseSlider);
+
+
 }
 
 GranularSynthProjectAudioProcessorEditor::~GranularSynthProjectAudioProcessorEditor()
