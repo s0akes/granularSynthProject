@@ -23,6 +23,9 @@
 //output to buffer
 //done :)
 
+
+//Dan's job is to 
+
 class SynthVoice : public juce::SynthesiserVoice // [3] Create voice class
 {
 public:
@@ -42,13 +45,14 @@ public:
 
     double getFrequency();
 
-    std::vector<grain> grainStore;
+    std::vector<grain> grainStore [100];
 
 private:
 
     double amplitude = 0;
     double frequency = 0;
     juce::SynthesiserSound* soundPtr;
+    // bool ean variable active flag
 
     
 

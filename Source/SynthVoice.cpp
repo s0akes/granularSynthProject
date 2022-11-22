@@ -9,37 +9,33 @@
 */
 
 #include "SynthVoice.h"
+#include <vector>
 
 SynthVoice::SynthVoice()
 {
+
+
+  for(int i = 0; i < grainStore.size() - 1; i++){
+      
+    grain::grain(frequency, 0, soundPtr->getWaveTablePtr, 0);
+
     
+}
+
 }
 
 bool  SynthVoice::canPlaySound(juce::SynthesiserSound* sound) 
 {
-
+  
 }
 
 void  SynthVoice::startNote(int midiNoteNumber, float velocity, juce::SynthesiserSound* sound, int currentPitchWheelPosition) 
 {
     soundPtr = sound;
     frequency = juce::MidiMessage::getMidiNoteInHertz(midiNoteNumber);
-  
-    for(int i = 0; i < grainStore.size() - 1; i++){
 
-        grain::grain(frequency, 0, soundPtr->getWaveTablePtr, 0);
-
-        if (!grain::isActive()){
-
-         grainStore[i] == nullptr;
-
-        } else {
-
-         grain::getNextSample();
-
-        }
-
-    }
+    
+    
     
 
 
