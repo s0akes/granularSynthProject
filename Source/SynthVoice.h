@@ -54,7 +54,8 @@ private:
     juce::SynthesiserSound* soundPtr;
     // bool ean variable active flag
 
-    
+    juce::ADSR densityEnv;
+    juce::ADSR::Parameters densityEnvParams;
 
 
 };

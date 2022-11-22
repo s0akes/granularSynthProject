@@ -13,11 +13,10 @@
 
 SynthVoice::SynthVoice()
 {
+    densityEnv.setSampleRate(getSampleRate());
   for (int i = 0; i < 100; i++){
     grainStore.push_back(grain());
   }
-
-}
 
 }
 
@@ -31,7 +30,12 @@ void  SynthVoice::startNote(int midiNoteNumber, float velocity, juce::Synthesise
     soundPtr = sound;
     frequency = juce::MidiMessage::getMidiNoteInHertz(midiNoteNumber);
 
-    
+    densityEnvParams.attack = 0.5;
+    densityEnvParams.decay = 0.5;
+    densityEnvParams.sustain = 0.5;
+    densityEnvParams.release = 0.5;
+    densityEnv.setParameters(densityEnvParams);
+    densityEnv.noteOn();
     
     
 
@@ -40,7 +44,7 @@ void  SynthVoice::startNote(int midiNoteNumber, float velocity, juce::Synthesise
 
 void  SynthVoice::stopNote(float velocity, bool allowTailOff)
 {
-    if (density < (1./5 * getSampleRate())) {
+    if (densityEnv.getNextSample() < (1./5 * getSampleRate())) {
 
         for (int i = 0; i < grainStore.size() - 1; i++) {
 
@@ -57,7 +61,16 @@ void  SynthVoice::stopNote(float velocity, bool allowTailOff)
             }
 
     }
- }   
+ }
+    
+    if (!allowTailOff || !densityEnv.isActive())
+    {
+        clearCurrentNote();
+    }
+    else
+    {
+        densityEnv.noteOff();
+    }
 }
 
 void  SynthVoice::pitchWheelMoved(int newPitchWheelValue)
@@ -76,6 +89,12 @@ void  SynthVoice::renderNextBlock(juce::AudioBuffer< float >& outputBuffer, int 
     if (grainStore[i].isActive()){
     outputBuffer += grainStore[i]; //this is wrong, check example
   }
+      
+      if (!densityEnv.isActive())
+      {
+          clearCurrentNote();
+      }
+          
 }
 
 double getFrequency()
