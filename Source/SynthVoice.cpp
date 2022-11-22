@@ -40,9 +40,24 @@ void  SynthVoice::startNote(int midiNoteNumber, float velocity, juce::Synthesise
 
 void  SynthVoice::stopNote(float velocity, bool allowTailOff)
 {
-    amplitude = 0.0;
-    clearCurrentNote();
-}
+    if (density < (1./5 * getSampleRate())) {
+
+        for (int i = 0; i < grainStore.size() - 1; i++) {
+
+            
+            bool activeGrain = 1;
+            if (grainStore[i].isActive()) {
+
+                activeGrain = 0;
+
+                if (!activeGrain)
+                    clearCurrentNote();
+                    amplitude = 0.0;
+               
+            }
+
+    }
+    
 
 void  SynthVoice::pitchWheelMoved(int newPitchWheelValue)
 {
