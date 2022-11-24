@@ -14,15 +14,17 @@
 SynthVoice::SynthVoice()
 {
     densityEnv.setSampleRate(getSampleRate());
-  for (int i = 0; i < 100; i++){
+
+    for (int i = 0; i < 100; i++)
+    {
     grainStore.push_back(grain());
-  }
+    }
 
 }
 
 bool  SynthVoice::canPlaySound(juce::SynthesiserSound* sound) 
 {
-  
+    
 }
 
 void  SynthVoice::startNote(int midiNoteNumber, float velocity, juce::SynthesiserSound* sound, int currentPitchWheelPosition) 
@@ -86,19 +88,25 @@ void  SynthVoice::controllerMoved(int controllerNumber, int newControllerValue)
 void SynthVoice::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int startSample, int numSamples)
 {
     for (int i = 0; i < grainStore.size(); i++) {
-        if (grainStore[i].isActive()) {
-            outputBuffer =+ grainStore[i]; //this is wrong, check example
+        if (grainStore[i].isActive()) 
+        {
+            temp = grainStore[i].getNextSample(); 
         }
+
+        for (int j = 0; j < outputBuffer.getNumChannels(); j++)
+        {
+            outputBuffer.addSample(j, i, temp);
+        }
+        
 
         if (!densityEnv.isActive())
         {
             clearCurrentNote();
         }
 
-
     }
 }
-double getFrequency()
+double SynthVoice::getFrequency()
 {
     return frequency;
 }

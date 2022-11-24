@@ -14,10 +14,9 @@
 #include <vector>
 #include "grain.h"
 
-//randomly trigger a grain store the grain in a vector
+//randomly trigger a grain
 //every sample check grain::isActive() 
 //if it is acitve grain::getNextSample
-//if it is not active then delete the grain
 //repeat for every grain in the vector
 //add the samples together
 //output to buffer
@@ -57,5 +56,5 @@ private:
     juce::ADSR densityEnv;
     juce::ADSR::Parameters densityEnvParams;
 
-
+    double temp;
 };
