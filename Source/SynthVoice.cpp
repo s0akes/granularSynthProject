@@ -82,7 +82,9 @@ void  SynthVoice::pitchWheelMoved(int newPitchWheelValue)
 
 void  SynthVoice::controllerMoved(int controllerNumber, int newControllerValue)
 {
-
+    const int wheelPos = m.getPitchWheelValue();
+        lastPitchWheelValues [channel - 1] = wheelPos;
+        handlePitchWheel (channel, wheelPos);
 }
 
 void SynthVoice::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int startSample, int numSamples)
