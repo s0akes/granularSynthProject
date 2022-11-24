@@ -50,6 +50,7 @@ public:
 
 private:
 
+    bool foundActive = 0;
     double amplitude = 0;
     double frequency = 0;
     juce::AudioSampleBuffer* waveTablePtr = nullptr;

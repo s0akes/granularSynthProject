@@ -39,7 +39,7 @@ private:
     float length = 0; //full length in seconds (attackTime + decayTime)
     int sampleRate = 44100;
     float currentIndex = 0;
-    float amplitude = 1;
+    float amplitude = 0.01;
 
     juce::ADSR envelope;
     juce::ADSR::Parameters envParam;

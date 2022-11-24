@@ -95,7 +95,8 @@ void SynthVoice::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int sta
         {
             if (!grainStore[i].isActive())
             {
-                grainStore[i].startGrain(frequency, 0, waveTablePtr, 0);
+                grainStore[i].startGrain(frequency, 0, waveTablePtr, 0); 
+                break;
             }
         }
     }
@@ -105,6 +106,8 @@ void SynthVoice::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int sta
         {
             temp = grainStore[i].getNextSample(); 
         }
+
+        temp = temp * densityEnv.getNextSample();
 
         for (int j = 0; j < outputBuffer.getNumChannels(); j++)
         {
@@ -126,7 +129,7 @@ double SynthVoice::getFrequency()
 
 int SynthVoice::randomTrigger()
 {
-    return rand() % 200;
+    return rand() % 20;
 }
 
 

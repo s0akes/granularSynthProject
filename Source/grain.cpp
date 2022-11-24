@@ -19,7 +19,8 @@ grain::grain()
 void grain::startGrain(double frequency, double randomFactor, juce::AudioSampleBuffer* wt, float grainLength)
 {
     //randomise the frequency and attack/decay
-    frequency = frequency + pow(2, randomCent() / 12*100) - 1; //randomFactor is the number of cents deviation
+    int c = randomCent();
+    //frequency = frequency + pow(2, c / (12*100)) - 1; //randomFactor is the number of cents deviation
     envParam.attack = 0.0;
     envParam.decay = 0.0;
     envParam.sustain = 1.0;
@@ -64,7 +65,7 @@ double grain::getNextSample()
         envelope.noteOff();
     }
 
-    currentIndex += delta; //advance index
+    currentIndex = currentIndex + delta; //advance index
     if (currentIndex >= (double)tSize) //wrap at the end of the wavetable
         currentIndex -= tSize;
 
