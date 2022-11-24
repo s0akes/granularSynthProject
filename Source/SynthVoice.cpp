@@ -89,7 +89,7 @@ void  SynthVoice::controllerMoved(int controllerNumber, int newControllerValue)
 
 void SynthVoice::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int startSample, int numSamples)
 {
-    if (randomTrigger() == randomTrigger() && densityEnv.isActive() == true)
+    if (randomTrigger() == randomTrigger() && densityEnv.isActive() == true)//temporary function to randomly trigger grain
     {
         for (int i = 0; i < grainStore.size(); i++)//finds the first active grain and starts playing it
         {
@@ -126,7 +126,7 @@ double SynthVoice::getFrequency()
 
 int SynthVoice::randomTrigger()
 {
-    return rand() % 20000;
+    return rand() % 200;
 }
 
 

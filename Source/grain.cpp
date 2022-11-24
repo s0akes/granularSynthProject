@@ -22,8 +22,8 @@ void grain::startGrain(double frequency, double randomFactor, juce::AudioSampleB
     frequency = frequency + pow(2, randomCent() / 12*100) - 1; //randomFactor is the number of cents deviation
     envParam.attack = 0.0;
     envParam.decay = 0.0;
-    envParam.sustain = 0.0;
-    envParam.release = 1.0;
+    envParam.sustain = 1.0;
+    envParam.release = 1000.0;
     envelope.setParameters(envParam);
     envelope.noteOn();
     
@@ -39,14 +39,20 @@ double grain::getNextSample()
     double V;
 
     //linear interpolation of the wavetable based on delta
-    int tableSize = waveTablePtr->getNumSamples();
+    int tSize = waveTablePtr->getNumSamples();
 
     int index0 = (int)currentIndex;
     int index1;
-    if (index0 == tableSize - 1)
+
+    if (index0 >= tSize - 1 || index0 < 0) 
+    {
         index1 = 0;
+    }
     else 
+    {
         index1 = index0 + 1;
+    }
+
     double frac = currentIndex - (double)index0;
     double V0 = waveTablePtr->getSample(0, index0);
     double V1 = waveTablePtr->getSample(0, index1);
@@ -59,8 +65,8 @@ double grain::getNextSample()
     }
 
     currentIndex += delta; //advance index
-    if (currentIndex >= (double)tableSize) //wrap at the end of the wavetable
-        currentIndex -= tableSize;
+    if (currentIndex >= (double)tSize) //wrap at the end of the wavetable
+        currentIndex -= tSize;
 
     //amplitude envelope
 
