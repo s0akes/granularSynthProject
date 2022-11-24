@@ -87,6 +87,17 @@ void  SynthVoice::controllerMoved(int controllerNumber, int newControllerValue)
 
 void SynthVoice::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int startSample, int numSamples)
 {
+    if (randomTrigger() == randomTrigger())
+    {
+        for (int i = 0; i < grainStore.size(); i++)//finds the first active grain and starts playing it
+        {
+            if (!grainStore[i].isActive())
+            {
+                grainStore[i].startGrain(frequency, 0, soundPtr->waveTable, 0);//not sure how to get the wavetable pointer through
+            }
+        }
+    }
+
     for (int i = 0; i < grainStore.size(); i++) {
         if (grainStore[i].isActive()) 
         {
@@ -109,6 +120,11 @@ void SynthVoice::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int sta
 double SynthVoice::getFrequency()
 {
     return frequency;
+}
+
+int SynthVoice::randomTrigger()
+{
+    return rand() % 20000;
 }
 
 

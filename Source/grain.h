@@ -12,6 +12,7 @@
 #pragma once
 #include <JuceHeader.h>
 #include "waveTableClass.h"
+#include <random>
 
 class grain
 {
@@ -24,6 +25,8 @@ public:
     double getNextSample(); //returns the next sample based on the synth
 
     bool isActive(); //checks if the ADSR is acitve, if it is not then delete the grain
+
+    int randomCent();
 
 private:
     float randomFequency = 440; //the new frequency 
