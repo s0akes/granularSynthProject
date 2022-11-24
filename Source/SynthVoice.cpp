@@ -24,12 +24,12 @@ SynthVoice::SynthVoice()
 
 bool  SynthVoice::canPlaySound(juce::SynthesiserSound* sound) 
 {
-    
+    return true;
 }
 
 void  SynthVoice::startNote(int midiNoteNumber, float velocity, juce::SynthesiserSound* sound, int currentPitchWheelPosition) 
 {
-    soundPtr = sound;
+    waveTablePtr = &(dynamic_cast<waveTableClass*>(sound)->waveTable);
     frequency = juce::MidiMessage::getMidiNoteInHertz(midiNoteNumber);
 
     densityEnvParams.attack = 0.5;
@@ -77,14 +77,14 @@ void  SynthVoice::stopNote(float velocity, bool allowTailOff)
 
 void  SynthVoice::pitchWheelMoved(int newPitchWheelValue)
 {
-
+    //const int wheelPos = m.getPitchWheelValue();
+    //lastPitchWheelValues[channel - 1] = wheelPos;
+    //handlePitchWheel(channel, wheelPos);
 }
 
 void  SynthVoice::controllerMoved(int controllerNumber, int newControllerValue)
 {
-    const int wheelPos = m.getPitchWheelValue();
-        lastPitchWheelValues [channel - 1] = wheelPos;
-        handlePitchWheel (channel, wheelPos);
+
 }
 
 void SynthVoice::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int startSample, int numSamples)
@@ -95,7 +95,7 @@ void SynthVoice::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int sta
         {
             if (!grainStore[i].isActive())
             {
-                grainStore[i].startGrain(frequency, 0, soundPtr->waveTable, 0);//not sure how to get the wavetable pointer through
+                grainStore[i].startGrain(frequency, 0, waveTablePtr, 0);
             }
         }
     }
