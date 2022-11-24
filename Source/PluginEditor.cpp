@@ -69,6 +69,12 @@ GranularSynthProjectAudioProcessorEditor::GranularSynthProjectAudioProcessorEdit
     wetMix.setTextBoxStyle(juce::Slider::TextEntryBoxPosition::TextBoxBelow, false, 95, 28);
     wetMix.setColour(juce::Slider::rotarySliderFillColourId, juce::Colours::orange);
 
+    grainSizeSlider.setRange(0., 1., 0.01); //creates the slider "Grain Size"
+    grainSizeSlider.setValue(0.);
+    grainSizeSlider.setSliderStyle(juce::Slider::SliderStyle::Rotary);
+    grainSizeSlider.setTextBoxStyle(juce::Slider::TextEntryBoxPosition::TextBoxBelow, false, 95, 28);
+    grainSizeSlider.setColour(juce::Slider::rotarySliderFillColourId, juce::Colours::indianred);
+
     randomLabel.setFont(juce::Font(16.0f, juce::Font::bold)); //label for "Random"
     randomLabel.setText("Random", juce::dontSendNotification);
     randomLabel.setColour(juce::Label::textColourId, juce::Colours::lightseagreen);
@@ -109,6 +115,11 @@ GranularSynthProjectAudioProcessorEditor::GranularSynthProjectAudioProcessorEdit
     wetMixLabel.setColour(juce::Label::textColourId, juce::Colours::orange);
     wetMixLabel.setJustificationType(juce::Justification::centred);
 
+    grainSizeLabel.setFont(juce::Font(16.0f, juce::Font::bold)); //label for "Grain Size"
+    grainSizeLabel.setText("Grain Size", juce::dontSendNotification);
+    grainSizeLabel.setColour(juce::Label::textColourId, juce::Colours::indianred);
+    grainSizeLabel.setJustificationType(juce::Justification::centred);
+
 
     addAndMakeVisible(&randomSlider); //makes sliders visible
     addAndMakeVisible(&attackSlider);
@@ -118,6 +129,7 @@ GranularSynthProjectAudioProcessorEditor::GranularSynthProjectAudioProcessorEdit
     addAndMakeVisible(&delayTime);
     addAndMakeVisible(&feedbackRate);
     addAndMakeVisible(&wetMix);
+    addAndMakeVisible(&grainSizeSlider);
     
     addAndMakeVisible(randomLabel);//makes labels visible
     addAndMakeVisible(attackLabel);
@@ -127,6 +139,7 @@ GranularSynthProjectAudioProcessorEditor::GranularSynthProjectAudioProcessorEdit
     addAndMakeVisible(delayTimeLabel);
     addAndMakeVisible(feedbackRateLabel);
     addAndMakeVisible(wetMixLabel);
+    addAndMakeVisible(grainSizeLabel);
 
     addAndMakeVisible(midiInputListLabel);
     midiInputListLabel.setText("MIDI Input:", juce::dontSendNotification);
@@ -172,7 +185,7 @@ void GranularSynthProjectAudioProcessorEditor::paint (juce::Graphics& g)
     g.setColour (juce::Colours::white);
     g.setFont (15.0f);
     CAMTlogo = juce::ImageCache::getFromMemory(BinaryData::logopng_png, BinaryData::logopng_pngSize);
-    g.drawImageWithin(CAMTlogo, 500, 180, 200, 85, juce::RectanglePlacement::stretchToFit);
+    g.drawImageWithin(CAMTlogo, 545, 170, 200, 85, juce::RectanglePlacement::stretchToFit);
 }
 
 void GranularSynthProjectAudioProcessorEditor::resized()
@@ -189,6 +202,7 @@ void GranularSynthProjectAudioProcessorEditor::resized()
     delayTimeLabel.setBounds(20, 160, 105, 25);
     feedbackRateLabel.setBounds(170, 160, 95, 25);
     wetMixLabel.setBounds(320, 160, 95, 25);
+    grainSizeLabel.setBounds(470, 160, 95, 25);
 
     randomSlider.setBounds(20, 20, 95, 100);
     attackSlider.setBounds(170, 20, 95, 100);
@@ -198,7 +212,7 @@ void GranularSynthProjectAudioProcessorEditor::resized()
     delayTime.setBounds(20, 175, 95, 100);
     feedbackRate.setBounds(170, 175, 95, 100);
     wetMix.setBounds(320, 175, 95, 100);
+    grainSizeSlider.setBounds(470, 175, 95, 100);
 
-    //midiInputList.setBounds(area.removeFromTop(36).removeFromRight(getWidth() - 150).reduced(8));
     midiInputList.setBounds(125, 279, 570, 18);
 }
