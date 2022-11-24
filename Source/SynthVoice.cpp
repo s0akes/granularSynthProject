@@ -11,7 +11,7 @@
 #include "SynthVoice.h"
 #include <vector>
 
-SynthVoice::SynthVoice()
+SynthVoice::SynthVoice(juce::AudioProcessorValueTreeState* valueTreeState)
 {
     densityEnv.setSampleRate(getSampleRate());
 
@@ -89,7 +89,7 @@ void  SynthVoice::controllerMoved(int controllerNumber, int newControllerValue)
 
 void SynthVoice::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int startSample, int numSamples)
 {
-    if (randomTrigger() == randomTrigger())
+    if (randomTrigger() == randomTrigger() && densityEnv.isActive() == true)
     {
         for (int i = 0; i < grainStore.size(); i++)//finds the first active grain and starts playing it
         {
