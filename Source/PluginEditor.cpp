@@ -171,6 +171,8 @@ void GranularSynthProjectAudioProcessorEditor::paint (juce::Graphics& g)
 
     g.setColour (juce::Colours::white);
     g.setFont (15.0f);
+    CAMTlogo = juce::ImageCache::getFromMemory(BinaryData::logopng_png, BinaryData::logopng_pngSize);
+    g.drawImageWithin(CAMTlogo, 500, 180, 200, 85, juce::RectanglePlacement::stretchToFit);
 }
 
 void GranularSynthProjectAudioProcessorEditor::resized()
