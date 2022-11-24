@@ -11,7 +11,7 @@
 #include "SynthVoice.h"
 #include <vector>
 
-SynthVoice::SynthVoice()
+SynthVoice::SynthVoice(juce::AudioProcessorValueTreeState* valueTreeState)
 {
     densityEnv.setSampleRate(getSampleRate());
 
