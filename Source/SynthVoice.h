@@ -28,7 +28,7 @@
 class SynthVoice : public juce::SynthesiserVoice // [3] Create voice class
 {
 public:
-    SynthVoice();
+    SynthVoice(juce::AudioProcessorValueTreeState* valueTreeState);
 
     bool  canPlaySound(juce::SynthesiserSound* sound) override;
 
