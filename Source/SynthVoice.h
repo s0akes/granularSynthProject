@@ -52,11 +52,11 @@ private:
 
     double amplitude = 0;
     double frequency = 0;
-    juce::AudioSampleBuffer* waveTablePtr;
+    juce::AudioSampleBuffer* waveTablePtr = nullptr;
     // bool ean variable active flag
 
     juce::ADSR densityEnv;
     juce::ADSR::Parameters densityEnvParams;
 
-    double temp;
+    double temp = 0;
 };
