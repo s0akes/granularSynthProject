@@ -44,6 +44,8 @@ public:
 
     double getFrequency();
 
+    int randomTrigger();
+
     std::vector<grain> grainStore;
 
 private:

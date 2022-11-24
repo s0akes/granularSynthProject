@@ -19,14 +19,14 @@ grain::grain()
 void grain::startGrain(double frequency, double randomFactor, juce::AudioSampleBuffer* wt, float grainLength)
 {
     //randomise the frequency and attack/decay
-    //frequency = frequency + pow(2, randomFactor / 12*100) - 1; //randomFactor is the number of cents deviation
+    frequency = frequency + pow(2, randomCent() / 12*100) - 1; //randomFactor is the number of cents deviation
     envParam.attack = 0.0;
     envParam.decay = 0.0;
     envParam.sustain = 0.0;
     envParam.release = 1.0;
     envelope.setParameters(envParam);
     envelope.noteOn();
-
+    
     //find delta based on the new frequency
     delta = wt->getNumSamples() * frequency / sampleRate;
 
@@ -70,4 +70,9 @@ double grain::getNextSample()
 bool grain::isActive()
 {
     return envelope.isActive(); //returns false once envelope release phase is over, envlope is started in the constructor
+}
+
+int grain::randomCent()
+{
+    return rand() % 100 - 50;
 }
