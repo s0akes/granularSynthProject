@@ -44,7 +44,7 @@ public:
 
     double getFrequency();
 
-    int randomTrigger();
+    int randomTrigger();//temporarararay
 
     std::vector<grain> grainStore;
 
@@ -52,7 +52,7 @@ private:
 
     double amplitude = 0;
     double frequency = 0;
-    juce::SynthesiserSound* soundPtr;
+    juce::AudioSampleBuffer* waveTablePtr;
     // bool ean variable active flag
 
     juce::ADSR densityEnv;
