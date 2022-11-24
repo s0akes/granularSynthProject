@@ -25,7 +25,7 @@
     <VS2022 targetFolder="Builds/VisualStudio2022">
       <CONFIGURATIONS>
         <CONFIGURATION isDebug="1" name="Debug" targetName="granularSynthProject" enablePluginBinaryCopyStep="1"
-                       vst3BinaryLocation="C:\Users\soake\Documents\SamOakesPlugins"/>
+                       vst3BinaryLocation="E:\MY DATA 2022\University\CAMT503\VST Plugins"/>
         <CONFIGURATION isDebug="0" name="Release" targetName="granularSynthProject"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
