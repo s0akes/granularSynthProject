@@ -52,7 +52,7 @@ double grain::getNextSample()
     double V1 = waveTablePtr->getSample(0, index1);
     V = frac * V1 + (1 - frac) * V0; //interpolated value
 
-    V *= amplitude * envelope.getNextSample();
+    V *= amplitude * (double)envelope.getNextSample();
     if (envelope.getNextSample() > 0.99)
     {
         envelope.noteOff();

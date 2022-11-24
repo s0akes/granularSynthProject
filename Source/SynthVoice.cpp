@@ -83,20 +83,21 @@ void  SynthVoice::controllerMoved(int controllerNumber, int newControllerValue)
 
 }
 
-void  SynthVoice::renderNextBlock(juce::AudioBuffer< float >& outputBuffer, int startSample, int numSamples) 
+void SynthVoice::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int startSample, int numSamples)
 {
-  for (int i = 0; i < grainStore.size(); i++){
-    if (grainStore[i].isActive()){
-    outputBuffer += grainStore[i]; //this is wrong, check example
-  }
-      
-      if (!densityEnv.isActive())
-      {
-          clearCurrentNote();
-      }
-          
-}
+    for (int i = 0; i < grainStore.size(); i++) {
+        if (grainStore[i].isActive()) {
+            outputBuffer =+ grainStore[i]; //this is wrong, check example
+        }
 
+        if (!densityEnv.isActive())
+        {
+            clearCurrentNote();
+        }
+
+
+    }
+}
 double getFrequency()
 {
     return frequency;
@@ -105,10 +106,9 @@ double getFrequency()
 
 
 
-//randomly trigger a grain store the grain in a vector
+//randomly trigger a grain
 //every sample check grain::isActive() 
 //if it is acitve grain::getNextSample
-//if it is not active then delete the grain
 //repeat for every grain in the vector
 //add the samples together
 //output to buffer
