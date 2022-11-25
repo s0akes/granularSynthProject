@@ -30,7 +30,7 @@ void grain::startGrain(double frequency, double randomFactor, juce::AudioSampleB
     
     //find delta based on the new frequency
     delta = wt->getNumSamples() * frequency / sampleRate;
-
+    
     //set the wavetable
     waveTablePtr = wt;
 }
@@ -58,9 +58,11 @@ double grain::getNextSample()
     double V0 = waveTablePtr->getSample(0, index0);
     double V1 = waveTablePtr->getSample(0, index1);
     V = frac * V1 + (1 - frac) * V0; //interpolated value
+    
+    double envSample = envelope.getNextSample();
 
-    V *= amplitude * (double)envelope.getNextSample();
-    if (envelope.getNextSample() > 0.99)
+    V *= amplitude * envSample;
+    if (envSample > 0.99)
     {
         envelope.noteOff();
     }
