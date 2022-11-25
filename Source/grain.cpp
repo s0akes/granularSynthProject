@@ -24,7 +24,7 @@ void grain::startGrain(double frequency, double randomFactor, juce::AudioSampleB
     envParam.attack = 0.0;
     envParam.decay = 0.0;
     envParam.sustain = 1.0;
-    envParam.release = 1000.0;
+    envParam.release = 1.0;
     envelope.setParameters(envParam);
     envelope.noteOn();
     
