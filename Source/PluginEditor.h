@@ -40,7 +40,7 @@ private:
     juce::Label feedbackRateLabel;
     juce::Label wetMixLabel;
     juce::Label midiInputListLabel;
-    juce::Label grainSizeLabel;
+    juce::Label grainLengthLabel;
 
 
     juce::Slider randomSlider;
@@ -51,7 +51,7 @@ private:
     juce::Slider delayTime;
     juce::Slider feedbackRate;
     juce::Slider wetMix;
-    juce::Slider grainSizeSlider;
+    juce::Slider grainLengthSlider;
 
     juce::ComboBox midiInputList;
 
