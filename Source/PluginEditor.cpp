@@ -169,7 +169,25 @@ GranularSynthProjectAudioProcessorEditor::GranularSynthProjectAudioProcessorEdit
         "RELEASE",
         releaseSlider);
 
+    grainLengthSliderAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(
+        audioProcessor.parameterTree,
+        "GRAINLENGTH",
+        grainLengthSlider);
 
+    delayTimeAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(
+        audioProcessor.parameterTree,
+        "DELAYTIME",
+        delayTime);
+
+    feedbackRateAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(
+        audioProcessor.parameterTree,
+        "FEEDBACKRATE",
+        feedbackRate);
+
+    wetMixAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(
+        audioProcessor.parameterTree,
+        "WETMIX",
+        wetMix);
 }
 
 GranularSynthProjectAudioProcessorEditor::~GranularSynthProjectAudioProcessorEditor()
