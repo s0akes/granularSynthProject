@@ -15,7 +15,7 @@ SynthVoice::SynthVoice(juce::AudioProcessorValueTreeState* valueTreeState)
 {
     densityEnv.setSampleRate(getSampleRate());
 
-    for (int i = 0; i < 100; i++)
+    for (int i = 0; i < 10; i++)
     {
         grainStore.push_back(grain());
     }
@@ -32,10 +32,10 @@ void  SynthVoice::startNote(int midiNoteNumber, float velocity, juce::Synthesise
     waveTablePtr = &(dynamic_cast<waveTableClass*>(sound)->waveTable);
     getFrequency(midiNoteNumber);
 
-    densityEnvParams.attack = 0.5;
-    densityEnvParams.decay = 0.5;
-    densityEnvParams.sustain = 0.5;
-    densityEnvParams.release = 0.5;
+    densityEnvParams.attack = 0.1;
+    densityEnvParams.decay = 0.1;
+    densityEnvParams.sustain = 0.4;
+    densityEnvParams.release = 0.1;
     densityEnv.setParameters(densityEnvParams);
     densityEnv.noteOn();
 
@@ -44,7 +44,7 @@ void  SynthVoice::startNote(int midiNoteNumber, float velocity, juce::Synthesise
 
 void  SynthVoice::stopNote(float velocity, bool allowTailOff)
 {
-    if (densityEnv.getNextSample() < (1./5 * getSampleRate())) {
+    if (densityEnv.getNextSample() < (1./getSampleRate())) {
 
         for (int i = 0; i < grainStore.size() - 1; i++) {
                         
@@ -54,7 +54,7 @@ void  SynthVoice::stopNote(float velocity, bool allowTailOff)
 
                 activeGrain = 0;
 
-                if (activeGrain == 0)
+                if (activeGrain == 1)
                     clearCurrentNote();
                     densityEnv.reset();
                     amplitude = 0.0;
@@ -125,11 +125,14 @@ void SynthVoice::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int sta
                 temp = grainStore[i].getNextSample();
                 //temp = temp * densityEnv.getNextSample();
                 outputBuffer.addSample(0, s, temp);
+                
 
             }
+            
 
-            counter += 1;
         }
+
+        counter += 1;
                 
     }
         
