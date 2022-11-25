@@ -12,23 +12,36 @@
 #pragma once
 #include <JuceHeader.h>
 #include "waveTableClass.h"
+#include <random>
 
 class grain
 {
 public:
     // g1 = new grain(frequecy, randomness, pointer to buffer);
-    grain(double frequency, double randomFactor, juce::AudioSampleBuffer* wt); //sets the frequency and the randomness of the grain
+    grain(); 
+    
+    void startGrain(double frequency, double randomFactor, juce::AudioSampleBuffer* wt, float grainLength); //sets the frequency and the randomness of the grain
 
     double getNextSample(); //returns the next sample based on the synth
 
+    bool isActive(); //checks if the ADSR is acitve, if it is not then delete the grain
+
+    int randomCent();
+
 private:
-    float randomFequency; //the new frequency 
-    float delta; //phase shift in samples for the given frequency
+    float randomFequency = 440; //the new frequency 
+    float delta = 0; //phase shift in samples for the given frequency
 
-    juce::AudioSampleBuffer* waveTablePtr; //pointer to the wavetable (to be created seperately to save memory/cpu)
+    juce::AudioSampleBuffer* waveTablePtr = nullptr; //pointer to the wavetable (to be created seperately to save memory/cpu)
 
-    float attackTime; //time it takes to get to full volume in seconds
-    float decayTime; //time it takes to get to 0 volume after attack in seconds
-    float lenght; //full length in seconds (attackTime + decayTime)
+    float attackTime = 0; //time it takes to get to full volume in seconds
+    float decayTime = 0; //time it takes to get to 0 volume after attack in seconds
+    float length = 0; //full length in seconds (attackTime + decayTime)
+    int sampleRate = 44100;
+    float currentIndex = 0;
+    float amplitude = 0.01;
+
+    juce::ADSR envelope;
+    juce::ADSR::Parameters envParam;
 };
 

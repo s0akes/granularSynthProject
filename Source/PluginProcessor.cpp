@@ -9,6 +9,7 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 #include <iostream>
+#include "SynthVoice.h"
 
 //==============================================================================
 GranularSynthProjectAudioProcessor::GranularSynthProjectAudioProcessor()
@@ -23,7 +24,10 @@ GranularSynthProjectAudioProcessor::GranularSynthProjectAudioProcessor()
                        ), parameterTree(*this, nullptr, "Parameters", createParameterLayout())
 #endif
 {
-    synth.addSound(new waveTableClass);
+    synth.addSound(new waveTableClass()); //wavetableclass is the synthesiser sound
+    
+    for (auto i = 0; i < 16; ++i) // create 4 voice polyphony by adding 4 voices to the synth object
+        synth.addVoice (new SynthVoice(&parameterTree)); //voices are destroyed by the synth when not needed
 }
 
 GranularSynthProjectAudioProcessor::~GranularSynthProjectAudioProcessor()
@@ -97,6 +101,8 @@ void GranularSynthProjectAudioProcessor::prepareToPlay (double sampleRate, int s
 {
     // Use this method as the place to do any pre-playback
     // initialisation that you need..
+
+    synth.setCurrentPlaybackSampleRate(sampleRate);
 }
 
 void GranularSynthProjectAudioProcessor::releaseResources()
@@ -133,31 +139,24 @@ bool GranularSynthProjectAudioProcessor::isBusesLayoutSupported (const BusesLayo
 
 void GranularSynthProjectAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
 {
-    juce::ScopedNoDenormals noDenormals;
-    auto totalNumInputChannels  = getTotalNumInputChannels();
-    auto totalNumOutputChannels = getTotalNumOutputChannels();
+    buffer.clear();
+    synth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
 
-    // In case we have more outputs than inputs, this code clears any output
-    // channels that didn't contain input data, (because these aren't
-    // guaranteed to be empty - they may contain garbage).
-    // This is here to avoid people getting screaming feedback
-    // when they first compile a plugin, but obviously you don't need to keep
-    // this code if your algorithm always overwrites all the output channels.
-    for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
-        buffer.clear (i, 0, buffer.getNumSamples());
+    //juce::ScopedNoDenormals noDenormals;
+    //auto totalNumInputChannels  = getTotalNumInputChannels();
+    //auto totalNumOutputChannels = getTotalNumOutputChannels();
 
-    // This is the place where you'd normally do the guts of your plugin's
-    // audio processing...
-    // Make sure to reset the state if your inner loop is processing
-    // the samples and the outer loop is handling the channels.
-    // Alternatively, you can process the samples with the channels
-    // interleaved by keeping the same state.
-    for (int channel = 0; channel < totalNumInputChannels; ++channel)
-    {
-        auto* channelData = buffer.getWritePointer (channel);
+    
+    //for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
+    //    buffer.clear (i, 0, buffer.getNumSamples());
 
-        // ..do something to the data...
-    }
+   
+    //for (int channel = 0; channel < totalNumInputChannels; ++channel)
+    //{
+    //    auto* channelData = buffer.getWritePointer (channel);
+
+       
+    //}
 }
 
 //==============================================================================
