@@ -42,13 +42,15 @@ public:
 
     void  renderNextBlock(juce::AudioBuffer< float >& outputBuffer, int startSample, int numSamples) override;
 
-    double getFrequency();
+    double getFrequency(int midiNoteNumber);
 
     int randomTrigger();//temporarararay
 
     std::vector<grain> grainStore;
 
 private:
+
+    int counter = 0;
 
     bool foundActive = 0;
     double amplitude = 0;
