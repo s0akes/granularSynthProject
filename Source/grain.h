@@ -46,4 +46,3 @@ private:
     juce::ADSR envelope;
     juce::ADSR::Parameters envParam;
 };
-
