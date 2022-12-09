@@ -104,7 +104,7 @@ void SynthVoice::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int sta
         
     for (int s = startSample; s < numSamples + startSample; s++)
     {
-
+        densityEnv.getNextSample();
         if (counter >= 44100)//temporary function to randomly trigger grain
         {
             counter = 0;
