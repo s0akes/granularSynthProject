@@ -53,7 +53,7 @@ public:
     void setStateInformation (const void* data, int sizeInBytes) override;
 
     juce::AudioProcessorValueTreeState parameterTree;
-
+//    randomiser rand;
 private:
 
     juce::Synthesiser synth; //this is the synth object that holds all the voices and the sounds!!!! >>VERY IMPORTANT<<

@@ -15,7 +15,7 @@ SynthVoice::SynthVoice(juce::AudioProcessorValueTreeState* valueTreeState)
 {
     densityEnv.setSampleRate(getSampleRate());
 
-    for (int i = 0; i < 10; i++)
+    for (int i = 0; i < 100; i++)
     {
         grainStore.push_back(grain());
     }
@@ -30,41 +30,25 @@ bool  SynthVoice::canPlaySound(juce::SynthesiserSound* sound)
 void  SynthVoice::startNote(int midiNoteNumber, float velocity, juce::SynthesiserSound* sound, int currentPitchWheelPosition) 
 {
     waveTablePtr = &(dynamic_cast<waveTableClass*>(sound)->waveTable);
-    getFrequency(midiNoteNumber);
+    //getFrequency(midiNoteNumber);
 
-    densityEnvParams.attack = 0.1;
-    densityEnvParams.decay = 0.1;
-    densityEnvParams.sustain = 0.4;
-    densityEnvParams.release = 0.1;
+    frequency = juce::MidiMessage::getMidiNoteInHertz(midiNoteNumber);
+    
+    
+    densityEnvParams.attack = 0.;
+    densityEnvParams.decay = 1.;
+    densityEnvParams.sustain = 0.75;
+    densityEnvParams.release = 5.;
     densityEnv.setParameters(densityEnvParams);
     densityEnv.noteOn();
-
+    amplitude = velocity;
 
 }
 
 void  SynthVoice::stopNote(float velocity, bool allowTailOff)
 {
-    if (densityEnv.getNextSample() < (1./getSampleRate())) {
 
-        for (int i = 0; i < grainStore.size() - 1; i++) {
-                        
-            bool activeGrain = 1;
-
-            if (grainStore[i].isActive()) {
-
-                activeGrain = 0;
-
-                if (activeGrain == 1)
-                    clearCurrentNote();
-                    densityEnv.reset();
-                    amplitude = 0.0;
-               
-            }
-
-    }
- }
-    
-    if (!allowTailOff || !densityEnv.isActive())
+    if (!allowTailOff)
     {
         clearCurrentNote();
     }
@@ -101,36 +85,44 @@ void SynthVoice::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int sta
 
         temp = temp * densityEnv.getNextSample();*/
 
-        
+    float density = amplitude * 500 / 44100.;
+    
     for (int s = startSample; s < numSamples + startSample; s++)
     {
-
-        if (counter >= 44100)//temporary function to randomly trigger grain
+        float currentEnvValue = densityEnv.getNextSample();
+        
+        if (juce::Random::getSystemRandom().nextFloat() < density * currentEnvValue)
+        
         {
-            counter = 0;
             for (int i = 0; i < grainStore.size(); i++)//finds the first active grain and starts playing it
             {
                 if (!grainStore[i].isActive())
                 {
-                    grainStore[i].startGrain(frequency, 0, waveTablePtr, 0);
+                    // pp = rand1.randomise(param)
+                    // pp = rand2.ransomise(pp)
+                    // grainStore[i].startGrain(pp, waveTablePtr);
+                    
+                    float f = frequency + (2.*juce::Random::getSystemRandom().nextFloat() -1. )* frequency / 100;
+                    
+                    grainStore[i].startGrain(f, 0, waveTablePtr, 0);
+                    
                     break;
                 }
             }
         }
-
-        for (int i = 0; i < grainStore.size(); i++) {
+        temp = 0;
+        for (int i = 0; i < grainStore.size(); i++)
+        {
 
             if (grainStore[i].isActive())
             {
-                temp = grainStore[i].getNextSample();
-                //temp = temp * densityEnv.getNextSample();
-                outputBuffer.addSample(0, s, temp);
-                
-
+                temp += grainStore[i].getNextSample() ;
             }
             
-
         }
+        //temp *= currentEnvValue * 0.1;
+        temp *= 0.05;
+        outputBuffer.addSample(0, s, temp);
 
         counter += 1;
                 
@@ -139,7 +131,29 @@ void SynthVoice::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int sta
 
     if (!densityEnv.isActive())
     {
-        clearCurrentNote();
+        
+        bool activeGrain = 0;
+
+        for (int i = 0; i < grainStore.size() - 1; i++)
+        {
+            
+            
+            if (grainStore[i].isActive())
+            {
+                
+                activeGrain = 1;
+                break;
+
+            }
+            
+        }
+        if (activeGrain == 0)
+        {
+            clearCurrentNote();
+            densityEnv.reset();
+            amplitude = 0.0;
+        }
+        
     }
 
 }

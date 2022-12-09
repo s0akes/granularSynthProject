@@ -60,6 +60,6 @@ private:
 
     juce::ADSR densityEnv;
     juce::ADSR::Parameters densityEnvParams;
-
+    //parameters param
     double temp = 0;
 };
