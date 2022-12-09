@@ -104,7 +104,7 @@ void GranularSynthProjectAudioProcessor::prepareToPlay (double sampleRate, int s
     // initialisation that you need..
 
     synth.setCurrentPlaybackSampleRate(sampleRate);
-=======
+
     delayBuffer.setSize(getTotalNumInputChannels(), sampleRate * samplesPerBlock);
     samplerRate = sampleRate;
     delayBuffer.clear();
@@ -164,7 +164,7 @@ void GranularSynthProjectAudioProcessor::processBlock (juce::AudioBuffer<float>&
 
        
     //}
-=======
+
     juce::ScopedNoDenormals noDenormals;
     auto totalNumInputChannels  = getTotalNumInputChannels();
     auto totalNumOutputChannels = getTotalNumOutputChannels();
