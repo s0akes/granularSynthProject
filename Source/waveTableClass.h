@@ -1,18 +1,9 @@
-/*
-  ==============================================================================
-
-    waveTable.h
-    Created: 15 Nov 2022 3:05:14pm
-    Author:  Mace Noonan
-
-  ==============================================================================
-*/
 
 #pragma once
 
 #include <JuceHeader.h>
 
-class waveTableClass: public juce::SynthesiserSound 
+class waveTableClass: public juce::SynthesiserSound //this is the sinthesisersoud class
 {
 public:
     
@@ -22,7 +13,7 @@ public:
         waveTable.setSize(1, tableSize);
         auto data = waveTable.getWritePointer(0);
         
-        auto angleDelta = juce::MathConstants<double>::twoPi / (double)(tableSize);
+        auto angleDelta = juce::MathConstants<double>::twoPi / (double)(tableSize); //coppied this lol
         auto currentAngle = 0.0;
         
         for (unsigned int i = 0; i < tableSize; ++i)
@@ -41,6 +32,11 @@ public:
     bool appliesToChannel (int midiChannel) override 
     {
         return true;
+    }
+
+    juce::AudioSampleBuffer* getWaveTablePtr()
+    {
+        return &waveTable;
     }
     
     juce::AudioSampleBuffer waveTable;

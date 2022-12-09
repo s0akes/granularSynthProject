@@ -12,9 +12,6 @@
 #include "grain.h"
 #include "waveTableClass.h"
 
-//==============================================================================
-/**
-*/
 class GranularSynthProjectAudioProcessor  : public juce::AudioProcessor
 {
 public:

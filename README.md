@@ -15,6 +15,6 @@ GOALS: <br />
 <li>Add sliders to edit these values and update ValueTree <br />
 <li>Implement randomness &#x1f352;
 
-
+badabing boom. Synth.
 
 </html>

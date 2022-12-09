@@ -9,6 +9,7 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 #include <iostream>
+#include "SynthVoice.h"
 
 //==============================================================================
 GranularSynthProjectAudioProcessor::GranularSynthProjectAudioProcessor()
@@ -23,7 +24,10 @@ GranularSynthProjectAudioProcessor::GranularSynthProjectAudioProcessor()
                        ), parameterTree(*this, nullptr, "Parameters", createParameterLayout())
 #endif
 {
-    synth.addSound(new waveTableClass);
+    synth.addSound(new waveTableClass()); //wavetableclass is the synthesiser sound
+    
+    for (auto i = 0; i < 64; ++i) // create 4 voice polyphony by adding 4 voices to the synth object
+        synth.addVoice (new SynthVoice(&parameterTree)); //voices are destroyed by the synth when not needed
 }
 
 GranularSynthProjectAudioProcessor::~GranularSynthProjectAudioProcessor()
@@ -95,9 +99,16 @@ void GranularSynthProjectAudioProcessor::changeProgramName (int index, const juc
 //==============================================================================
 void GranularSynthProjectAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
+
+    // Use this method as the place to do any pre-playback
+    // initialisation that you need..
+
+    synth.setCurrentPlaybackSampleRate(sampleRate);
+
     delayBuffer.setSize(getTotalNumInputChannels(), sampleRate * samplesPerBlock);
     samplerRate = sampleRate;
     delayBuffer.clear();
+
 }
 
 void GranularSynthProjectAudioProcessor::releaseResources()
@@ -134,6 +145,26 @@ bool GranularSynthProjectAudioProcessor::isBusesLayoutSupported (const BusesLayo
 
 void GranularSynthProjectAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
 {
+
+    buffer.clear();
+    synth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
+
+    //juce::ScopedNoDenormals noDenormals;
+    //auto totalNumInputChannels  = getTotalNumInputChannels();
+    //auto totalNumOutputChannels = getTotalNumOutputChannels();
+
+    
+    //for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
+    //    buffer.clear (i, 0, buffer.getNumSamples());
+
+   
+    //for (int channel = 0; channel < totalNumInputChannels; ++channel)
+    //{
+    //    auto* channelData = buffer.getWritePointer (channel);
+
+       
+    //}
+
     juce::ScopedNoDenormals noDenormals;
     auto totalNumInputChannels  = getTotalNumInputChannels();
     auto totalNumOutputChannels = getTotalNumOutputChannels();
@@ -198,6 +229,7 @@ void GranularSynthProjectAudioProcessor::feedback(int channel, int bufferLength,
         delayBuffer.addFromWithRamp(channel, remain, dryBuffer, remain, feedbackRate, feedbackRate);
         delayBuffer.addFromWithRamp(channel, 0, dryBuffer, bufferLength - remain, feedbackRate, feedbackRate);
     }
+
 }
 
 //==============================================================================
@@ -249,6 +281,10 @@ juce::AudioProcessorValueTreeState::ParameterLayout GranularSynthProjectAudioPro
     params.push_back(std::make_unique<juce::AudioParameterFloat>("DECAY", "Decay", decayRange, 0.5f));
     params.push_back(std::make_unique<juce::AudioParameterFloat>("SUSTAIN", "Sustain", 0.0f, 1.0f, 0.5f));
     params.push_back(std::make_unique<juce::AudioParameterFloat>("RELEASE", "Release", releaseRange, 1.f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("GRAINLENGTH", "Grain Length", 1, 10, 0.1f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("DELAYTIME", "Delay Time", 20, 3000, 1));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("FEEDBACKRATE", "Feedback Rate", 0.1, 0.99, 0.01));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("WETMIX", "Wet Mix", 0., 1., 0.01));
 
     return { params.begin(), params.end() };
     

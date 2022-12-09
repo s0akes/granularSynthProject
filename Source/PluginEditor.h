@@ -29,5 +29,41 @@ private:
     // access the processor object that created it.
     GranularSynthProjectAudioProcessor& audioProcessor;
 
+    juce::Image CAMTlogo;
+    
+    juce::Label randomLabel;
+    juce::Label attackLabel;
+    juce::Label decayLabel;
+    juce::Label sussyLabel;
+    juce::Label releaseLabel;
+    juce::Label delayTimeLabel;
+    juce::Label feedbackRateLabel;
+    juce::Label wetMixLabel;
+    juce::Label midiInputListLabel;
+    juce::Label grainLengthLabel;
+
+
+    juce::Slider randomSlider;
+    juce::Slider attackSlider;
+    juce::Slider decaySlider;
+    juce::Slider sussySlider;
+    juce::Slider releaseSlider;
+    juce::Slider delayTime;
+    juce::Slider feedbackRate;
+    juce::Slider wetMix;
+    juce::Slider grainLengthSlider;
+
+    juce::ComboBox midiInputList;
+
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> attackSliderAttachment;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> decaySliderAttachment;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> sussySliderAttachment;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> releaseSliderAttachment;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> grainLengthSliderAttachment;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> delayTimeAttachment;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> feedbackRateAttachment;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> wetMixAttachment;
+
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (GranularSynthProjectAudioProcessorEditor)
 };
