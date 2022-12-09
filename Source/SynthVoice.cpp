@@ -42,7 +42,9 @@ void  SynthVoice::startNote(int midiNoteNumber, float velocity, juce::Synthesise
     grainParameters.grainLength = 2;
     grainParameters.grainShape = 0.5;
     grainParameters.pan = 50;
-    grainParameters.waveShaper = 1;
+    grainParameters.waveShape = 1;
+    grainParameters.waveShaper = &waveShaper;
+    waveShaper.SetDistProfile(grainParameters.waveShape, 5);
 }
 
 void  SynthVoice::stopNote(float velocity, bool allowTailOff)
@@ -62,8 +64,8 @@ void  SynthVoice::stopNote(float velocity, bool allowTailOff)
                     densityEnv.reset();
                     amplitude = 0.0;        
             }
+        }
     }
- }
     
     if (!allowTailOff || !densityEnv.isActive())
     {
@@ -91,21 +93,10 @@ void SynthVoice::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int sta
 {
     if (!this->isVoiceActive())
         return;
-
-    
-
-    
-        /*if (grainStore[i].isActive()) 
-        {
-            temp = grainStore[i].getNextSample(); 
-        }
-
-        temp = temp * densityEnv.getNextSample();*/
-
         
     for (int s = startSample; s < numSamples + startSample; s++)
     {
-        //densityEnv.getNextSample();
+        densityEnv.getNextSample();
         if (counter >= 44100)//temporary function to randomly trigger grain
         {
             counter = 0;
@@ -113,8 +104,8 @@ void SynthVoice::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int sta
             {
                 if (!grainStore[i].isActive())
                 {
-                    //randomise parameteres, return new param object
-                    grainStore[i].startGrain(grainParameters, waveTablePtr); //this takes the base grainParams untill the random functon is created
+                    //randomise parameteres based on base object with values defined in startNote(), return new param object
+                    grainStore[i].startGrain(&grainParameters, waveTablePtr); //this takes the base grainParams untill the random functon is created
                     break;
                 }
             }
@@ -138,19 +129,3 @@ void SynthVoice::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int sta
     }
 
 }
-
-int SynthVoice::randomTrigger()
-{
-    return rand() % 20;
-}
-
-
-
-
-//randomly trigger a grain
-//every sample check grain::isActive() 
-//if it is acitve grain::getNextSample
-//repeat for every grain in the vector
-//add the samples together
-//output to buffer
-//done :)

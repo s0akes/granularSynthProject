@@ -16,19 +16,19 @@ grain::grain()
 
 }
 
-void grain::startGrain(grainParams params, juce::AudioSampleBuffer* wt)
+void grain::startGrain(grainParams* params, juce::AudioSampleBuffer* wt)
 {
-    parameters = params;
+    parameters = *params;
     //set the frequency and attack/decay
-    envParam.attack = params.grainLength*params.grainShape;
+    envParam.attack = parameters.grainLength* parameters.grainShape;
     envParam.decay = 0.0;
     envParam.sustain = 1.0;
-    envParam.release = params.grainLength*(1-params.grainShape);
+    envParam.release = parameters.grainLength*(1- parameters.grainShape);
     envelope.setParameters(envParam);
     envelope.noteOn();
     
     //find delta based on the new frequency
-    delta = wt->getNumSamples() * params.frequency / sampleRate;
+    delta = wt->getNumSamples() * parameters.frequency / sampleRate;
 
     //set the wavetable
     waveTablePtr = wt;
@@ -79,7 +79,7 @@ double grain::getNextSample()
     if (currentIndex >= (double)tSize) //wrap at the end of the wavetable
         currentIndex -= tSize;
 
-    //amplitude envelope
+    parameters.waveShaper->distort(V);
 
     return V; //returns values from wavetable * envelope
 }

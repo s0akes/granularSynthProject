@@ -13,6 +13,7 @@
 #include "waveTableClass.h"
 #include <vector>
 #include "grain.h"
+#include "Distortion.h"
 
 //randomly trigger a grain
 //every sample check grain::isActive() 
@@ -42,8 +43,6 @@ public:
 
     void  renderNextBlock(juce::AudioBuffer< float >& outputBuffer, int startSample, int numSamples) override;
 
-    int randomTrigger();//temporarararay
-
     std::vector<grain> grainStore;
 
 private:
@@ -60,6 +59,7 @@ private:
     juce::ADSR::Parameters densityEnvParams;
 
     grainParams grainParameters;
+    Dist waveShaper;
 
     double temp = 0;
 };
