@@ -1,0 +1,62 @@
+
+WHAT WORKS:
+- UI is linked to ValueTree
+- Grain sound synthesis
+- Delay line
+- ADSR (density) 
+
+
+NEEDS TO BE DONE:
+- ValueTree not linked to sound generation
+- SynthVoice doesn't trigger grains or clear voices correctly
+- Randomisation not yet finished
+- Randomisation not linked to sound generation or grain trigger
+- Delay needs linking to ValueTree
+
+
+WHAT HAS WORKED:
+- Discord; meetings, help, updates on Github commits
+- Github as a record of changes
+- In person meetings 
+
+
+NEEDS TO CHANGE:
+- More regular meetings (never had a single meeting with everyone ever)
+- Github commits are more descriptive, should stand by themselves, less often
+- Once task is committed, available to complete other tasks
+- Tasks should be more focussed
+- Deadlines for tasks; can be revised if required
+- Better organisation within branches
+- Use scheduling tool for arranging meetings
+
+
+TASKS:
+
+- Merge branches and clean up 
+	- Remove useless ones
+
+- grainParameters Class; duration, envShape, frequency, noise to sine ratio, type of wave shape, amplitude, panning
+	- Do it in < 12 minutes
+	- Update grain to use this Class
+	- Write to two channels using two different getNextValue calls
+		- Facilitates panning/balance
+
+- randomiser Class; keep ranges for each parameter
+	- 10 minutes < timeToDo < 1 day
+	- Clip values outside acceptable range properly to maintain randomness
+		- Make range smaller (e.g. narrower cloud for extreme notes) or change centre value
+
+- active SynthVoice should trigger densityEnv, getNextValue, decide whether to trigger grain at every sample
+	- Release densityEnv when stopNote is received
+	- When densityEnv is not active, stop the voice
+		- Don't clear if there are still grains active, even if density is too small for new grains to be triggered
+
+- Attach Listener to range-related parameters in the ValueTreeState
+	- Example in sinSynth_withADSR
+	- Parameters are in different objects and classes
+		- Make sure ValueTreeState is passed to necessary classes
+
+- Make a Doodle to organise meetings
+
+- Listen to Mace (big boss)
+
