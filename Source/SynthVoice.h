@@ -42,8 +42,6 @@ public:
 
     void  renderNextBlock(juce::AudioBuffer< float >& outputBuffer, int startSample, int numSamples) override;
 
-    double getFrequency(int midiNoteNumber);
-
     int randomTrigger();//temporarararay
 
     std::vector<grain> grainStore;
@@ -60,6 +58,8 @@ private:
 
     juce::ADSR densityEnv;
     juce::ADSR::Parameters densityEnvParams;
+
+    grainParams grainParameters;
 
     double temp = 0;
 };

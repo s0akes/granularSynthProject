@@ -30,7 +30,6 @@ bool  SynthVoice::canPlaySound(juce::SynthesiserSound* sound)
 void  SynthVoice::startNote(int midiNoteNumber, float velocity, juce::SynthesiserSound* sound, int currentPitchWheelPosition) 
 {
     waveTablePtr = &(dynamic_cast<waveTableClass*>(sound)->waveTable);
-    getFrequency(midiNoteNumber);
 
     densityEnvParams.attack = 0.1;
     densityEnvParams.decay = 0.1;
@@ -39,7 +38,11 @@ void  SynthVoice::startNote(int midiNoteNumber, float velocity, juce::Synthesise
     densityEnv.setParameters(densityEnvParams);
     densityEnv.noteOn();
 
-
+    grainParameters.frequency = juce::MidiMessage::getMidiNoteInHertz(midiNoteNumber);
+    grainParameters.grainLength = 2;
+    grainParameters.grainShape = 0.5;
+    grainParameters.pan = 50;
+    grainParameters.waveShaper = 1;
 }
 
 void  SynthVoice::stopNote(float velocity, bool allowTailOff)
@@ -57,10 +60,8 @@ void  SynthVoice::stopNote(float velocity, bool allowTailOff)
                 if (activeGrain == 1)
                     clearCurrentNote();
                     densityEnv.reset();
-                    amplitude = 0.0;
-               
+                    amplitude = 0.0;        
             }
-
     }
  }
     
@@ -104,7 +105,7 @@ void SynthVoice::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int sta
         
     for (int s = startSample; s < numSamples + startSample; s++)
     {
-        densityEnv.getNextSample();
+        //densityEnv.getNextSample();
         if (counter >= 44100)//temporary function to randomly trigger grain
         {
             counter = 0;
@@ -112,7 +113,8 @@ void SynthVoice::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int sta
             {
                 if (!grainStore[i].isActive())
                 {
-                    grainStore[i].startGrain(frequency, 0, waveTablePtr, 0);
+                    //randomise parameteres, return new param object
+                    grainStore[i].startGrain(grainParameters, waveTablePtr); //this takes the base grainParams untill the random functon is created
                     break;
                 }
             }
@@ -122,18 +124,11 @@ void SynthVoice::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int sta
 
             if (grainStore[i].isActive())
             {
-                temp = grainStore[i].getNextSample();
-                //temp = temp * densityEnv.getNextSample();
-                outputBuffer.addSample(0, s, temp);
-                
-
-            }
-            
-
+                outputBuffer.addSample(0, s, grainStore[i].getNextSampleL());
+                outputBuffer.addSample(1, s, grainStore[i].getNextSampleR());
+            }            
         }
-
-        counter += 1;
-                
+        counter += 1;               
     }
         
 
@@ -142,11 +137,6 @@ void SynthVoice::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int sta
         clearCurrentNote();
     }
 
-}
-double SynthVoice::getFrequency(int midiNoteNumber)
-{
-    frequency = juce::MidiMessage::getMidiNoteInHertz(midiNoteNumber);
-    return frequency;
 }
 
 int SynthVoice::randomTrigger()
