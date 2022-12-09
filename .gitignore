@@ -1,9 +1,3 @@
-
-*
-
-!/
-
-!/source/**/*
-
-!*.txt
+JuceLibraryCode/
+Builds/
 
