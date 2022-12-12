@@ -38,13 +38,13 @@ TASKS:
 		- Facilitates panning/balance
 
 
-- randomiser Class; keep ranges for each parameter - RIVER
+- randomiser Class; keep ranges for each parameter - DAN
 	- 10 minutes < timeToDo < 1 day
 	- Clip values outside acceptable range properly to maintain randomness
 		- Make range smaller (e.g. narrower cloud for extreme notes) or change centre value
 
 
-- active SynthVoice should trigger densityEnv, getNextValue, decide whether to trigger grain at every sample - DAN
+- active SynthVoice should trigger densityEnv, getNextValue, decide whether to trigger grain at every sample - RIVER and OTHERS
 	- Release densityEnv when stopNote is received
 	- When densityEnv is not active, stop the voice
 		- Don't clear if there are still grains active, even if density is too small for new grains to be triggered
@@ -56,5 +56,5 @@ TASKS:
 		- Make sure ValueTreeState is passed to necessary classes
 
 
-- Listen to Mace (big boss)
+- Listen to Mace (big boss) - MACE
 
