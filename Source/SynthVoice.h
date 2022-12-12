@@ -43,11 +43,8 @@ public:
 
     void  renderNextBlock(juce::AudioBuffer< float >& outputBuffer, int startSample, int numSamples) override;
 
-<<<<<<< HEAD
     void parameterChanged(const juce::String& parameterID, float newValue) override;
     
-=======
->>>>>>> 639d291caf80a80326368d08a3d5934f1cbd9dfd
     int randomTrigger();//temporarararay
 
     std::vector<grain> grainStore;

@@ -43,6 +43,11 @@ void  SynthVoice::startNote(int midiNoteNumber, float velocity, juce::Synthesise
     densityEnvParams.release = 0.1;
     densityEnv.setParameters(densityEnvParams);
     densityEnv.noteOn();
+
+    auto rawAttack = ADSRstate->getRawParameterValue("ATTACK");
+    auto rawDecay = ADSRstate->getRawParameterValue("DECAY");
+    auto rawSustain = ADSRstate->getRawParameterValue("SUSTAIN");
+    auto rawRelease = ADSRstate->getRawParameterValue("RELEASE");
     
     densityEnvParams.attack = rawAttack->load();
     densityEnvParams.decay = rawDecay->load();
@@ -59,7 +64,7 @@ void  SynthVoice::startNote(int midiNoteNumber, float velocity, juce::Synthesise
     grainParameters.waveShaper = 1;
 }
 
-void  SynthVoice::stopNote(float velocity, bool allowTailOff) //needs changing
+void  SynthVoice::stopNote(float velocity, bool allowTailOff)
 {
     if (densityEnv.getNextSample() < (1./getSampleRate())) {
 
