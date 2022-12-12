@@ -6,6 +6,8 @@
               companyName="CAMT">
   <MAINGROUP id="tg7ZWf" name="granularSynthProject">
     <GROUP id="{AB942ACC-9B40-7C89-D2F3-790A0ECEA2FD}" name="Source">
+      <FILE id="vFx8vz" name="Distortion.cpp" compile="1" resource="0" file="Source/Distortion.cpp"/>
+      <FILE id="sq33zs" name="Distortion.h" compile="0" resource="0" file="Source/Distortion.h"/>
       <FILE id="kAUMtY" name="logopng.png" compile="0" resource="1" file="Source/logopng.png"/>
       <FILE id="yoFD1v" name="grain.cpp" compile="1" resource="0" file="Source/grain.cpp"/>
       <FILE id="fxgauR" name="grain.h" compile="0" resource="0" file="Source/grain.h"/>

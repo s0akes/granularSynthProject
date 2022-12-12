@@ -20,15 +20,17 @@ public:
     // g1 = new grain(frequecy, randomness, pointer to buffer);
     grain(); 
     
-    void startGrain(double frequency, double randomFactor, juce::AudioSampleBuffer* wt, float grainLength); //sets the frequency and the randomness of the grain
+    void startGrain(grainParams params, juce::AudioSampleBuffer* wt); //sets the frequency and the randomness of the grain
 
-    double getNextSample(); //returns the next sample based on the synth
+    double getNextSampleL(); //returns the next sample based on the synth
+    double getNextSampleR(); //returns the next sample based on the synth
 
     bool isActive(); //checks if the ADSR is acitve, if it is not then delete the grain
 
-    int randomCent();
-
 private:
+    double getNextSample(); //returns the next sample based on the synth
+    double temp;
+
     float randomFequency = 440; //the new frequency 
     float delta = 0; //phase shift in samples for the given frequency
 
@@ -41,8 +43,19 @@ private:
     float currentIndex = 0;
     float amplitude = 0.5;
 
-    
+    grainParams parameters;
 
     juce::ADSR envelope;
     juce::ADSR::Parameters envParam;
+};
+
+struct grainParams
+{
+
+    float frequency; //the frequency
+    float grainLength;//full length of the grain
+    float grainShape;//ratio 0-1 of where the peak of the envelope will be
+    int waveShaper;//wave shaping profile int 1-5
+    float pan; //0-100 panning of the grain
+
 };
