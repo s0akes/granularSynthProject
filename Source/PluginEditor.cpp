@@ -133,6 +133,8 @@ GranularSynthProjectAudioProcessorEditor::GranularSynthProjectAudioProcessorEdit
     addAndMakeVisible(&feedbackRate);
     addAndMakeVisible(&wetMix);
     addAndMakeVisible(&grainLengthSlider);
+    addAndMakeVisible(&grainShape);
+    addAndMakeVisible(&waveShaper);
     
     addAndMakeVisible(randomLabel);//makes labels visible
     addAndMakeVisible(attackLabel);
@@ -143,14 +145,16 @@ GranularSynthProjectAudioProcessorEditor::GranularSynthProjectAudioProcessorEdit
     addAndMakeVisible(feedbackRateLabel);
     addAndMakeVisible(wetMixLabel);
     addAndMakeVisible(grainLengthLabel);
+    addAndMakeVisible(grainShapeLabel);
+    addAndMakeVisible(waveShaperLabel);
 
-    addAndMakeVisible(midiInputListLabel);
+    /*addAndMakeVisible(midiInputListLabel);
     midiInputListLabel.setText("MIDI Input:", juce::dontSendNotification);
-    midiInputListLabel.attachToComponent(&midiInputList, true);
+    midiInputListLabel.attachToComponent(&midiInputList, true);*/
 
-    addAndMakeVisible(midiInputList);
-    midiInputList.setTextWhenNoChoicesAvailable("No MIDI Inputs Enabled");
-    auto midiInputs = juce::MidiInput::getAvailableDevices();
+    //addAndMakeVisible(midiInputList);
+    //midiInputList.setTextWhenNoChoicesAvailable("No MIDI Inputs Enabled");
+    //auto midiInputs = juce::MidiInput::getAvailableDevices();
 
     attackSliderAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(
         audioProcessor.parameterTree,
@@ -235,5 +239,5 @@ void GranularSynthProjectAudioProcessorEditor::resized()
     wetMix.setBounds(320, 175, 95, 100);
     grainLengthSlider.setBounds(470, 175, 95, 100);
 
-    midiInputList.setBounds(125, 279, 570, 18);
+    //midiInputList.setBounds(125, 279, 570, 18);
 }

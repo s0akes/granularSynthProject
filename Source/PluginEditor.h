@@ -41,6 +41,8 @@ private:
     juce::Label wetMixLabel;
     juce::Label midiInputListLabel;
     juce::Label grainLengthLabel;
+    juce::Label grainShapeLabel;
+    juce::Label waveShaperLabel;
 
 
     juce::Slider randomSlider;
@@ -52,8 +54,11 @@ private:
     juce::Slider feedbackRate;
     juce::Slider wetMix;
     juce::Slider grainLengthSlider;
+    juce::Slider grainShape;
+    juce::Slider waveShaper;
 
-    juce::ComboBox midiInputList;
+
+    //juce::ComboBox midiInputList;
 
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> attackSliderAttachment;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> decaySliderAttachment;
