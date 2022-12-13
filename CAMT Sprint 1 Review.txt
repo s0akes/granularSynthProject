@@ -1,4 +1,3 @@
-
 WHAT WORKS:
 - UI is linked to ValueTree
 - Grain sound synthesis
@@ -32,31 +31,30 @@ NEEDS TO CHANGE:
 
 TASKS:
 
-- Merge branches and clean up 
-	- Remove useless ones
-
-- grainParameters Class; duration, envShape, frequency, noise to sine ratio, type of wave shape, amplitude, panning
+- grainParameters Class; duration, envShape, frequency, noise to sine ratio, type of wave shape, amplitude, panning - MATT
 	- Do it in < 12 minutes
 	- Update grain to use this Class
 	- Write to two channels using two different getNextValue calls
 		- Facilitates panning/balance
 
-- randomiser Class; keep ranges for each parameter
+
+- randomiser Class; keep ranges for each parameter - DAN
 	- 10 minutes < timeToDo < 1 day
 	- Clip values outside acceptable range properly to maintain randomness
 		- Make range smaller (e.g. narrower cloud for extreme notes) or change centre value
 
-- active SynthVoice should trigger densityEnv, getNextValue, decide whether to trigger grain at every sample
+
+- active SynthVoice should trigger densityEnv, getNextValue, decide whether to trigger grain at every sample - RIVER and OTHERS
 	- Release densityEnv when stopNote is received
 	- When densityEnv is not active, stop the voice
 		- Don't clear if there are still grains active, even if density is too small for new grains to be triggered
 
-- Attach Listener to range-related parameters in the ValueTreeState
+
+- Attach Listener to range-related parameters in the ValueTreeState - SAMUEL and JACK
 	- Example in sinSynth_withADSR
 	- Parameters are in different objects and classes
 		- Make sure ValueTreeState is passed to necessary classes
 
-- Make a Doodle to organise meetings
 
-- Listen to Mace (big boss)
+- Listen to Mace (big boss) - MACE
 
