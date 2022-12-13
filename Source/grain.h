@@ -24,6 +24,8 @@ public:
     int waveShape;//wave shaping profile int 1-5
     float pan; //0-100 panning of the grain
     Dist* waveShaper;
+    float grainVolume;//controls grain distortion
+    float grainControlVolume = 0.1;//makes sure everything is in the +-1 range
 
 };
 

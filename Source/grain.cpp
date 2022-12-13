@@ -81,6 +81,8 @@ double grain::getNextSample()
 
     V = parameters.waveShaper->distort(V);
 
+    V = V * parameters.grainControlVolume;//amplitude for cloud to control overall volume
+
     return V; //returns values from wavetable * envelope
 }
 

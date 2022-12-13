@@ -58,12 +58,12 @@ void  SynthVoice::startNote(int midiNoteNumber, float velocity, juce::Synthesise
 
 
     grainParameters.frequency = juce::MidiMessage::getMidiNoteInHertz(midiNoteNumber);
-    grainParameters.grainLength = 0.1;
-    grainParameters.grainShape = 0;
+    grainParameters.grainLength = 10;
+    grainParameters.grainShape = 0.5;
     grainParameters.pan = 0.5;
-    grainParameters.waveShape = 4;
+    grainParameters.waveShape = 2;
     grainParameters.waveShaper = &waveShaper;
-    waveShaper.SetDistProfile(grainParameters.waveShape, 5);
+    waveShaper.SetDistProfile(grainParameters.waveShape, 3);
 }
 
 void  SynthVoice::stopNote(float velocity, bool allowTailOff)
@@ -123,7 +123,9 @@ void SynthVoice::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int sta
             {
                 if (!grainStore[i].isActive())
                 {
+                    //===!!IMPORTANT STEP NEEDS DOING!!===
                     //randomise parameteres based on base object with values defined in startNote(), return new param object
+                    //====================================
                     grainStore[i].startGrain(&grainParameters, waveTablePtr); //this takes the base grainParams untill the random functon is created
                     break;
                 }
@@ -134,14 +136,13 @@ void SynthVoice::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int sta
 
             if (grainStore[i].isActive())
             {
-                outputBuffer.addSample(0, s, grainStore[i].getNextSampleL());
-                outputBuffer.addSample(1, s, grainStore[i].getNextSampleR());
+                outputBuffer.addSample(0, s, waveShaper.SoftClip(grainStore[i].getNextSampleL()));
+                outputBuffer.addSample(1, s, waveShaper.SoftClip(grainStore[i].getNextSampleR()));
             }            
         }
         counter += 1;               
     }
-        
-
+    
     if (!densityEnv.isActive())
     {
         clearCurrentNote();
