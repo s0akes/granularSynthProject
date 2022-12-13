@@ -59,7 +59,7 @@ void  SynthVoice::startNote(int midiNoteNumber, float velocity, juce::Synthesise
 
     grainParameters.frequency = juce::MidiMessage::getMidiNoteInHertz(midiNoteNumber);
     grainParameters.grainLength = 2;
-    grainParameters.grainShape = 0.5;
+    grainParameters.grainShape = 0;
     grainParameters.pan = 50;
     grainParameters.waveShape = 1;
     grainParameters.waveShaper = &waveShaper;
