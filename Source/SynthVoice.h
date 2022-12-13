@@ -66,7 +66,6 @@ private:
 
     grainParams grainParameters;
 
-    grainParams grainParameters;
     Dist waveShaper;
 
     double temp = 0;
