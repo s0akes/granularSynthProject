@@ -37,11 +37,11 @@ void  SynthVoice::startNote(int midiNoteNumber, float velocity, juce::Synthesise
 {
     waveTablePtr = &(dynamic_cast<waveTableClass*>(sound)->waveTable);
 
-    densityEnvParams.attack = 0.1;
-    densityEnvParams.decay = 0.1;
-    densityEnvParams.sustain = 0.4;
-    densityEnvParams.release = 0.1;
-    densityEnv.setParameters(densityEnvParams);
+    //densityEnvParams.attack = 0.1;
+    //densityEnvParams.decay = 0.1;
+    //densityEnvParams.sustain = 0.4;
+    //densityEnvParams.release = 0.1;
+    //densityEnv.setParameters(densityEnvParams);
     densityEnv.noteOn();
 
     auto rawAttack = ADSRstate->getRawParameterValue("ATTACK");
@@ -68,7 +68,7 @@ void  SynthVoice::startNote(int midiNoteNumber, float velocity, juce::Synthesise
 
 void  SynthVoice::stopNote(float velocity, bool allowTailOff)
 {
-    if (densityEnv.getNextSample() < (1./getSampleRate())) {
+   /* if (densityEnv.getNextSample() < (1./getSampleRate())) {
 
         for (int i = 0; i < grainStore.size() - 1; i++) {
                         
@@ -84,7 +84,7 @@ void  SynthVoice::stopNote(float velocity, bool allowTailOff)
                     amplitude = 0.0;        
             }
         }
-    }
+    }*/
     
     if (!allowTailOff || !densityEnv.isActive())
     {
