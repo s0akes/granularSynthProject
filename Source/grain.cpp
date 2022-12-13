@@ -79,7 +79,7 @@ double grain::getNextSample()
     if (currentIndex >= (double)tSize) //wrap at the end of the wavetable
         currentIndex -= tSize;
 
-    parameters.waveShaper->distort(V);
+    V = parameters.waveShaper->distort(V);
 
     return V; //returns values from wavetable * envelope
 }
