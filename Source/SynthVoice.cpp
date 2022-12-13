@@ -14,6 +14,12 @@
 SynthVoice::SynthVoice(juce::AudioProcessorValueTreeState* valueTreeState)
 {
     densityEnv.setSampleRate(getSampleRate());
+    ADSRstate = valueTreeState;
+
+    ADSRstate->addParameterListener("ATTACK", this);
+    ADSRstate->addParameterListener("DECAY", this);
+    ADSRstate->addParameterListener("RELEASE", this);
+    ADSRstate->addParameterListener("SUSTAIN", this);
 
     for (int i = 0; i < 10; i++)
     {
@@ -37,6 +43,19 @@ void  SynthVoice::startNote(int midiNoteNumber, float velocity, juce::Synthesise
     densityEnvParams.release = 0.1;
     densityEnv.setParameters(densityEnvParams);
     densityEnv.noteOn();
+
+    auto rawAttack = ADSRstate->getRawParameterValue("ATTACK");
+    auto rawDecay = ADSRstate->getRawParameterValue("DECAY");
+    auto rawSustain = ADSRstate->getRawParameterValue("SUSTAIN");
+    auto rawRelease = ADSRstate->getRawParameterValue("RELEASE");
+    
+    densityEnvParams.attack = rawAttack->load();
+    densityEnvParams.decay = rawDecay->load();
+    densityEnvParams.sustain = rawSustain->load();
+    densityEnvParams.release = rawRelease->load();
+    //updates envelope
+    densityEnv.setParameters(densityEnvParams);
+
 
     grainParameters.frequency = juce::MidiMessage::getMidiNoteInHertz(midiNoteNumber);
     grainParameters.grainLength = 2;
@@ -144,7 +163,31 @@ int SynthVoice::randomTrigger()
     return rand() % 20;
 }
 
+void SynthVoice::parameterChanged(const juce::String& parameterID, float newValue) 
+{
+    if (parameterID == "ATTACK")
+    {
+        densityEnvParams.attack = newValue;
 
+    }
+    else if (parameterID == "DECAY")
+    {
+        densityEnvParams.decay = newValue;
+
+    }
+    else if (parameterID == "SUSTAIN")
+    {
+        densityEnvParams.sustain = newValue;
+
+    }
+    else if (parameterID == "RELEASE")
+    {
+        densityEnvParams.release = newValue;
+
+    }
+
+    densityEnv.setParameters(densityEnvParams);
+}
 
 
 //randomly trigger a grain

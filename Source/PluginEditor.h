@@ -53,7 +53,7 @@ private:
     juce::Slider wetMix;
     juce::Slider grainLengthSlider;
 
-    juce::ComboBox midiInputList;
+    //juce::ComboBox midiInputList;
 
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> attackSliderAttachment;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> decaySliderAttachment;
