@@ -13,6 +13,7 @@
 #include "waveTableClass.h"
 #include <vector>
 #include "grain.h"
+#include "Distortion.h"
 
 //randomly trigger a grain
 //every sample check grain::isActive() 
@@ -25,7 +26,8 @@
 
 //Dan's job is to triggering grains in renderNextBlock and add to the output buffer
 
-class SynthVoice : public juce::SynthesiserVoice // [3] Create voice class
+class SynthVoice : public juce::SynthesiserVoice, 
+    public juce::AudioProcessorValueTreeState::Listener // [3] Create voice class
 {
 public:
     SynthVoice(juce::AudioProcessorValueTreeState* valueTreeState);
@@ -42,6 +44,8 @@ public:
 
     void  renderNextBlock(juce::AudioBuffer< float >& outputBuffer, int startSample, int numSamples) override;
 
+    void parameterChanged(const juce::String& parameterID, float newValue) override;
+    
     int randomTrigger();//temporarararay
 
     std::vector<grain> grainStore;
@@ -58,8 +62,11 @@ private:
 
     juce::ADSR densityEnv;
     juce::ADSR::Parameters densityEnvParams;
+    juce::AudioProcessorValueTreeState* ADSRstate;
 
     grainParams grainParameters;
+
+    Dist waveShaper;
 
     double temp = 0;
 };

@@ -11,6 +11,7 @@
 #include <JuceHeader.h>
 #include "grain.h"
 #include "waveTableClass.h"
+#include "Distortion.h"
 
 class GranularSynthProjectAudioProcessor  : public juce::AudioProcessor
 {
