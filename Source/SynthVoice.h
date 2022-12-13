@@ -13,6 +13,7 @@
 #include "waveTableClass.h"
 #include <vector>
 #include "grain.h"
+#include "Distortion.h"
 
 //randomly trigger a grain
 //every sample check grain::isActive() 
@@ -65,7 +66,7 @@ private:
 
     grainParams grainParameters;
 
-    grainParams grainParameters;
+    Dist waveShaper;
 
     double temp = 0;
 };
