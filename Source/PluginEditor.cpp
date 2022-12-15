@@ -16,7 +16,7 @@ GranularSynthProjectAudioProcessorEditor::GranularSynthProjectAudioProcessorEdit
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
 
-    setSize(735, 300); //sets size of window
+    setSize(735, 450); //sets size of window
 
     randomSlider.setRange(0.01, 10, 0.01); //creates the slider "Random"
     randomSlider.setValue(1);
@@ -78,6 +78,19 @@ GranularSynthProjectAudioProcessorEditor::GranularSynthProjectAudioProcessorEdit
     grainLengthSlider.setTextBoxStyle(juce::Slider::TextEntryBoxPosition::TextBoxBelow, false, 95, 28);
     grainLengthSlider.setColour(juce::Slider::rotarySliderFillColourId, juce::Colours::indianred);
 
+    grainShape.setRange(0., 1., 0.01); //creates the slider "Grain Shape"
+    grainShape.setValue(0.);
+    grainShape.setSliderStyle(juce::Slider::SliderStyle::Rotary);
+    grainShape.setTextBoxStyle(juce::Slider::TextEntryBoxPosition::TextBoxBelow, false, 95, 28);
+    grainShape.setColour(juce::Slider::rotarySliderFillColourId, juce::Colours::indianred);
+
+    waveShaper.setRange(1, 5, 1); //creates the slider "Wave Shape"
+    waveShaper.setValue(1);
+    waveShaper.setSliderStyle(juce::Slider::SliderStyle::Rotary);
+    waveShaper.setTextBoxStyle(juce::Slider::TextEntryBoxPosition::TextBoxBelow, false, 95, 28);
+    waveShaper.setColour(juce::Slider::rotarySliderFillColourId, juce::Colours::indianred);
+
+
     randomLabel.setFont(juce::Font(16.0f, juce::Font::bold)); //label for "Random"
     randomLabel.setText("Random", juce::dontSendNotification);
     randomLabel.setColour(juce::Label::textColourId, juce::Colours::lightseagreen);
@@ -122,6 +135,16 @@ GranularSynthProjectAudioProcessorEditor::GranularSynthProjectAudioProcessorEdit
     grainLengthLabel.setText("Grain Length", juce::dontSendNotification);
     grainLengthLabel.setColour(juce::Label::textColourId, juce::Colours::indianred);
     grainLengthLabel.setJustificationType(juce::Justification::centred);
+
+    grainShapeLabel.setFont(juce::Font(16.0f, juce::Font::bold)); //label for "Grain Shape"
+    grainShapeLabel.setText("Grain Shape", juce::dontSendNotification);
+    grainShapeLabel.setColour(juce::Label::textColourId, juce::Colours::indianred);
+    grainShapeLabel.setJustificationType(juce::Justification::centred);
+
+    waveShaperLabel.setFont(juce::Font(16.0f, juce::Font::bold)); //label for "Waveshaper"
+    waveShaperLabel.setText("Waveshaper", juce::dontSendNotification);
+    waveShaperLabel.setColour(juce::Label::textColourId, juce::Colours::indianred);
+    waveShaperLabel.setJustificationType(juce::Justification::centred);
 
 
     addAndMakeVisible(&randomSlider); //makes sliders visible
@@ -195,6 +218,16 @@ GranularSynthProjectAudioProcessorEditor::GranularSynthProjectAudioProcessorEdit
         audioProcessor.parameterTree,
         "WETMIX",
         wetMix);
+
+    grainShapeAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(
+        audioProcessor.parameterTree,
+        "GRAINSHAPE",
+        grainShape);
+
+    waveShaperAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(
+        audioProcessor.parameterTree,
+        "WAVESHAPER",
+        waveShaper);
 }
 
 GranularSynthProjectAudioProcessorEditor::~GranularSynthProjectAudioProcessorEditor()
@@ -218,26 +251,36 @@ void GranularSynthProjectAudioProcessorEditor::resized()
     // This is generally where you'll want to lay out the positions of any
     // subcomponents in your editor..
     auto area = getLocalBounds();
-
+    
+    //row 1
     randomLabel.setBounds(20, 5, 95, 25);
     attackLabel.setBounds(170, 5, 95, 25);
     decayLabel.setBounds(320, 5, 95, 25);
     sussyLabel.setBounds(470, 5, 95, 25);
     releaseLabel.setBounds(620, 5, 95, 25);
-    delayTimeLabel.setBounds(20, 160, 105, 25);
-    feedbackRateLabel.setBounds(170, 160, 95, 25);
-    wetMixLabel.setBounds(320, 160, 95, 25);
-    grainLengthLabel.setBounds(470, 160, 95, 25);
-
+    //2
+    grainLengthLabel.setBounds(20, 160, 95, 25);
+    grainShapeLabel.setBounds(170, 160, 95, 25);
+    waveShaperLabel.setBounds(320, 160, 95, 25);
+    //3
+    delayTimeLabel.setBounds(20, 315, 105, 25);
+    feedbackRateLabel.setBounds(170, 315, 95, 25);
+    wetMixLabel.setBounds(320, 315, 95, 25);
+    
+    //row 1
     randomSlider.setBounds(20, 20, 95, 100);
     attackSlider.setBounds(170, 20, 95, 100);
     decaySlider.setBounds(320, 20, 95, 100);
     sussySlider.setBounds(470, 20, 95, 100);
     releaseSlider.setBounds(620, 20, 95, 100);
-    delayTime.setBounds(20, 175, 95, 100);
-    feedbackRate.setBounds(170, 175, 95, 100);
-    wetMix.setBounds(320, 175, 95, 100);
-    grainLengthSlider.setBounds(470, 175, 95, 100);
+    
+    grainLengthSlider.setBounds(20, 175, 95, 100);
+    grainShape.setBounds(170, 175, 95, 100);
+    waveShaper.setBounds(320, 175, 95, 100);
+
+    delayTime.setBounds(20, 330, 95, 100);
+    feedbackRate.setBounds(170, 330, 95, 100);
+    wetMix.setBounds(320, 330, 95, 100);
 
     //midiInputList.setBounds(125, 279, 570, 18);
 }

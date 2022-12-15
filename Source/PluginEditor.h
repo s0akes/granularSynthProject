@@ -68,6 +68,8 @@ private:
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> delayTimeAttachment;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> feedbackRateAttachment;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> wetMixAttachment;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> grainShapeAttachment;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> waveShaperAttachment;
 
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (GranularSynthProjectAudioProcessorEditor)
