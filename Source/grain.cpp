@@ -10,6 +10,7 @@
 
 #include "grain.h"
 #include <math.h>
+#include <random>
 
 grain::grain()
 {
@@ -20,10 +21,10 @@ void grain::startGrain(grainParams* params, juce::AudioSampleBuffer* wt)
 {
     parameters = *params;
     //set the frequency and attack/decay
-    envParam.attack = parameters.grainLength* parameters.grainShape;
-    envParam.decay = 0.0;
-    envParam.sustain = 1.0;
-    envParam.release = parameters.grainLength*(1- parameters.grainShape);
+    envParam.attack = 0.1 + parameters.grainLength* parameters.grainShape;
+    envParam.decay = 0.1;
+    envParam.sustain = parameters.grainVolume;
+    envParam.release = 0.1 + parameters.grainLength*(1- parameters.grainShape);
     envelope.setParameters(envParam);
     envelope.noteOn();
     
@@ -42,7 +43,7 @@ double grain::getNextSampleL()
 
 double grain::getNextSampleR()
 {
-    return temp * (1-parameters.pan);
+    return temp * (1-(float)parameters.pan);
 }
 
 double grain::getNextSample()
@@ -89,4 +90,58 @@ double grain::getNextSample()
 bool grain::isActive()
 {
     return envelope.isActive(); //returns false once envelope release phase is over, envlope is started in the constructor
+}
+
+grainParams grainRandomiser::randomise(grainParams* params, double r)
+{
+    grainParams output = *params;
+
+    output.frequency = frequency(output.frequency, r);
+    output.grainLength = grainLength(output.grainLength, r);
+    output.grainShape = grainShape();
+    output.pan = pan();
+    output.grainVolume = grainVolume();
+
+    return output;
+}
+
+bool grainRandomiser::randomTrigger()
+{
+    int temp = rand() % triggerChance;
+    if (temp == 1)
+        return true;
+    else
+        return false;
+}
+
+float grainRandomiser::frequency(float f, double r)
+{
+    float random = (rand() % 100) - 50;
+    f = f + pow(2, (r * random * 50) / 1200);
+    return f;
+}
+
+float grainRandomiser::grainLength(float l, double r)
+{
+    float random = ((float)(rand() % 200) / 100) - 1;
+    l = l + (random * r);
+    return l;
+}
+
+float grainRandomiser::grainShape()
+{
+    float random = (((float)(rand() % 100) / 100) * 0.8) + 1;
+    return random;
+}
+
+float grainRandomiser::pan()
+{
+    float random = (float)(rand() % 100);
+    return random;
+}
+
+float grainRandomiser::grainVolume()
+{
+    float random = (float)(rand() % 100) / 100;
+    return random;
 }

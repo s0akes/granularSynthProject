@@ -29,10 +29,27 @@ public:
 
 };
 
+class grainRandomiser
+{
+public:
+
+    grainParams randomise(grainParams* params, double r);
+    bool randomTrigger();
+
+    int triggerChance = 20000;
+
+private:
+    float frequency(float f, double r);
+    float grainLength(float l, double r);
+    float grainShape();
+    float pan();
+    float grainVolume();
+};
+
 class grain
 {
 public:
-    // g1 = new grain(frequecy, randomness, pointer to buffer);
+    
     grain(); 
     
     void startGrain(grainParams* params, juce::AudioSampleBuffer* wt); //sets the frequency and the randomness of the grain

@@ -20,6 +20,7 @@ SynthVoice::SynthVoice(juce::AudioProcessorValueTreeState* valueTreeState)
     ADSRstate->addParameterListener("DECAY", this);
     ADSRstate->addParameterListener("RELEASE", this);
     ADSRstate->addParameterListener("SUSTAIN", this);
+    ADSRstate->addParameterListener("GRAINLENGTH", this);
 
     for (int i = 0; i < 10; i++)
     {
@@ -52,41 +53,24 @@ void  SynthVoice::startNote(int midiNoteNumber, float velocity, juce::Synthesise
     densityEnvParams.attack = rawAttack->load();
     densityEnvParams.decay = rawDecay->load();
     densityEnvParams.sustain = rawSustain->load();
-    densityEnvParams.release = rawRelease->load();
+    //densityEnvParams.release = rawRelease->load();
     //updates envelope
     densityEnv.setParameters(densityEnvParams);
 
 
     grainParameters.frequency = juce::MidiMessage::getMidiNoteInHertz(midiNoteNumber);
-    grainParameters.grainLength = 10;
+    grainParameters.grainLength = ADSRstate->getRawParameterValue("GRAINLENGTH")->load();
     grainParameters.grainShape = 0.5;
     grainParameters.pan = 0.5;
-    grainParameters.waveShape = 2;
+    grainParameters.waveShape = 1;
     grainParameters.waveShaper = &waveShaper;
-    waveShaper.SetDistProfile(grainParameters.waveShape, 3);
+    waveShaper.SetDistProfile(grainParameters.waveShape, 1);
 }
 
 void  SynthVoice::stopNote(float velocity, bool allowTailOff)
 {
-    if (densityEnv.getNextSample() < (1./getSampleRate())) {
 
-        for (int i = 0; i < grainStore.size() - 1; i++) {
-                        
-            bool activeGrain = 1;
-
-            if (grainStore[i].isActive()) {
-
-                activeGrain = 0;
-
-                if (activeGrain == 1)
-                    clearCurrentNote();
-                    densityEnv.reset();
-                    amplitude = 0.0;        
-            }
-        }
-    }
-    
-    if (!allowTailOff || !densityEnv.isActive())
+    if (!allowTailOff)
     {
         clearCurrentNote();
     }
@@ -116,17 +100,14 @@ void SynthVoice::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int sta
     for (int s = startSample; s < numSamples + startSample; s++)
     {
         densityEnv.getNextSample();
-        if (counter >= 44100)//temporary function to randomly trigger grain
+        //randomiser.triggerChance = randomiser.triggerChance * (1.5-(densityEnv.getNextSample()));
+        if ((rand() % 1000000) == 5000)//temporary function to randomly trigger grain
         {
-            counter = 0;
             for (int i = 0; i < grainStore.size(); i++)//finds the first active grain and starts playing it
             {
                 if (!grainStore[i].isActive())
                 {
-                    //===!!IMPORTANT STEP NEEDS DOING!!===
-                    //randomise parameteres based on base object with values defined in startNote(), return new param object
-                    //====================================
-                    grainStore[i].startGrain(&grainParameters, waveTablePtr); //this takes the base grainParams untill the random functon is created
+                    grainStore[i].startGrain(&randomiser.randomise(&grainParameters, 1), waveTablePtr); //this takes the base grainParams untill the random functon is created
                     break;
                 }
             }
@@ -136,11 +117,12 @@ void SynthVoice::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int sta
 
             if (grainStore[i].isActive())
             {
-                outputBuffer.addSample(0, s, waveShaper.SoftClip(grainStore[i].getNextSampleL()));
-                outputBuffer.addSample(1, s, waveShaper.SoftClip(grainStore[i].getNextSampleR()));
+                //outputBuffer.addSample(0, s, waveShaper.SoftClip(grainStore[i].getNextSampleL()));
+                //outputBuffer.addSample(1, s, waveShaper.SoftClip(grainStore[i].getNextSampleR()));
+                outputBuffer.addSample(0, s, grainStore[i].getNextSampleL());
+                outputBuffer.addSample(1, s, grainStore[i].getNextSampleR());
             }            
-        }
-        counter += 1;               
+        }               
     }
     
     if (!densityEnv.isActive())
