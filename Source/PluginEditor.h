@@ -41,6 +41,8 @@ private:
     juce::Label wetMixLabel;
     juce::Label midiInputListLabel;
     juce::Label grainLengthLabel;
+    juce::Label grainShapeLabel;
+    juce::Label waveShaperLabel;
 
 
     juce::Slider randomSlider;
@@ -52,6 +54,9 @@ private:
     juce::Slider feedbackRate;
     juce::Slider wetMix;
     juce::Slider grainLengthSlider;
+    juce::Slider grainShape;
+    juce::Slider waveShaper;
+
 
     //juce::ComboBox midiInputList;
 
@@ -63,6 +68,8 @@ private:
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> delayTimeAttachment;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> feedbackRateAttachment;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> wetMixAttachment;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> grainShapeAttachment;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> waveShaperAttachment;
 
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (GranularSynthProjectAudioProcessorEditor)

@@ -285,6 +285,8 @@ juce::AudioProcessorValueTreeState::ParameterLayout GranularSynthProjectAudioPro
     params.push_back(std::make_unique<juce::AudioParameterFloat>("DELAYTIME", "Delay Time", 20, 3000, 1));
     params.push_back(std::make_unique<juce::AudioParameterFloat>("FEEDBACKRATE", "Feedback Rate", 0.1, 0.99, 0.01));
     params.push_back(std::make_unique<juce::AudioParameterFloat>("WETMIX", "Wet Mix", 0., 1., 0.01));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("GRAINSHAPE", "Grain Shape", 0, 1, 0.01));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("WAVESHAPER", "Waveshaper", 1, 5, 1));
 
     return { params.begin(), params.end() };
     
