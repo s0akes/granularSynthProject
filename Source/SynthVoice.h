@@ -50,8 +50,6 @@ public:
 
     std::vector<grain> grainStore;
 
-    grainRandomiser randomiser;
-
 private:
 
     int chance = 0;
@@ -67,7 +65,7 @@ private:
     juce::AudioProcessorValueTreeState* ADSRstate;
 
     grainParams grainParameters;
-
+    grainRandomiser randomiser;
     Dist waveShaper;
 
     double temp = 0;

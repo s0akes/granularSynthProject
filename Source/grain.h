@@ -25,7 +25,7 @@ public:
     float pan; //0-100 panning of the grain
     Dist* waveShaper;
     float grainVolume;//controls grain distortion
-    float grainControlVolume = 0.1;//makes sure everything is in the +-1 range
+    float grainControlVolume = 0.5;//makes sure everything is in the +-1 range
 
 };
 
@@ -58,9 +58,9 @@ public:
     double getNextSampleR(); //returns the next sample based on the synth
 
     bool isActive(); //checks if the ADSR is acitve, if it is not then delete the grain
-
+    double getNextSample();
 private:
-    double getNextSample(); //returns the next sample based on the synth
+    //double getNextSample(); //returns the next sample based on the synth
     double temp;
 
     float randomFequency = 440; //the new frequency 
@@ -73,7 +73,6 @@ private:
     float length = 0; //full length in seconds (attackTime + decayTime)
     int sampleRate = 48000;
     float currentIndex = 0;
-    float amplitude = 0.5;
 
     grainParams parameters;
     Dist* waveShaper;

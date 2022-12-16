@@ -59,12 +59,12 @@ void  SynthVoice::startNote(int midiNoteNumber, float velocity, juce::Synthesise
 
 
     grainParameters.frequency = juce::MidiMessage::getMidiNoteInHertz(midiNoteNumber);
-    grainParameters.grainLength = 0.05;//ADSRstate->getRawParameterValue("GRAINLENGTH")->load();
+    grainParameters.grainLength = ADSRstate->getRawParameterValue("GRAINLENGTH")->load();
     grainParameters.grainShape = 0.5;
     grainParameters.pan = 0.5;
-    grainParameters.waveShape = 1;
+    grainParameters.waveShape = 2;
     grainParameters.waveShaper = &waveShaper;
-    waveShaper.SetDistProfile(grainParameters.waveShape, 1);
+    waveShaper.SetDistProfile(grainParameters.waveShape, 10);
 }
 
 void  SynthVoice::stopNote(float velocity, bool allowTailOff)
@@ -101,34 +101,39 @@ void SynthVoice::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int sta
     {
         densityEnv.getNextSample();
         //randomiser.triggerChance = randomiser.triggerChance * (1.5-(densityEnv.getNextSample()));
-        if ((rand() % 1000000) == 5000)//temporary function to randomly trigger grain
+        if ((rand() % 2000) == 1000)//temporary function to randomly trigger grain
         {
             for (int i = 0; i < grainStore.size(); i++)//finds the first active grain and starts playing it
             {
-                if (!grainStore[i].isActive())
+
+                if (!grainStore[i].isActive() && densityEnv.isActive() == 1)
                 {
                     grainStore[i].startGrain(&randomiser.randomise(&grainParameters, 1), waveTablePtr); //this takes the base grainParams untill the random functon is created
                     break;
                 }
             }
         }
-
+        foundActive = 0;
         for (int i = 0; i < grainStore.size(); i++) {
 
             if (grainStore[i].isActive())
             {
-                //outputBuffer.addSample(0, s, waveShaper.SoftClip(grainStore[i].getNextSampleL()));
-                //outputBuffer.addSample(1, s, waveShaper.SoftClip(grainStore[i].getNextSampleR()));
-                outputBuffer.addSample(0, s, grainStore[i].getNextSampleL());
-                outputBuffer.addSample(1, s, grainStore[i].getNextSampleR());
-            }            
-        }               
+                outputBuffer.addSample(0, s, waveShaper.SoftClip(grainStore[i].getNextSampleL()));
+                outputBuffer.addSample(1, s, waveShaper.SoftClip(grainStore[i].getNextSampleR()));
+                //outputBuffer.addSample(0, s, grainStore[i].getNextSampleL());
+                //outputBuffer.addSample(1, s, grainStore[i].getNextSampleR());
+
+                foundActive += 1;
+            }
+        }
+        if (foundActive == 0 && !densityEnv.isActive())
+                clearCurrentNote();
     }
-    
-    if (!densityEnv.isActive())
-    {
-        clearCurrentNote();
-    }
+    //
+    //if (!densityEnv.isActive())
+    //{
+    //    clearCurrentNote();
+    //}
 
 }
 
