@@ -21,10 +21,10 @@ void grain::startGrain(grainParams* params, juce::AudioSampleBuffer* wt)
 {
     parameters = *params;
     //set the frequency and attack/decay
-    envParam.attack = 0.1 + parameters.grainLength* parameters.grainShape;
+    envParam.attack = 0.1;// +parameters.grainLength * parameters.grainShape;
     envParam.decay = 0.1;
     envParam.sustain = parameters.grainVolume;
-    envParam.release = 0.1 + parameters.grainLength*(1- parameters.grainShape);
+    envParam.release = 0.1;// +parameters.grainLength * (1 - parameters.grainShape);
     envelope.setParameters(envParam);
     envelope.noteOn();
     
@@ -43,7 +43,7 @@ double grain::getNextSampleL()
 
 double grain::getNextSampleR()
 {
-    return temp * (1-(float)parameters.pan);
+    return temp * (1-parameters.pan);
 }
 
 double grain::getNextSample()
@@ -108,7 +108,7 @@ grainParams grainRandomiser::randomise(grainParams* params, double r)
 bool grainRandomiser::randomTrigger()
 {
     int temp = rand() % triggerChance;
-    if (temp == 1)
+    if (temp == 1006)
         return true;
     else
         return false;

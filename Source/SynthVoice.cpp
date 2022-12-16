@@ -22,7 +22,7 @@ SynthVoice::SynthVoice(juce::AudioProcessorValueTreeState* valueTreeState)
     ADSRstate->addParameterListener("SUSTAIN", this);
     ADSRstate->addParameterListener("GRAINLENGTH", this);
 
-    for (int i = 0; i < 10; i++)
+    for (int i = 0; i < 1000; i++)
     {
         grainStore.push_back(grain());
     }
@@ -59,7 +59,7 @@ void  SynthVoice::startNote(int midiNoteNumber, float velocity, juce::Synthesise
 
 
     grainParameters.frequency = juce::MidiMessage::getMidiNoteInHertz(midiNoteNumber);
-    grainParameters.grainLength = ADSRstate->getRawParameterValue("GRAINLENGTH")->load();
+    grainParameters.grainLength = 0.05;//ADSRstate->getRawParameterValue("GRAINLENGTH")->load();
     grainParameters.grainShape = 0.5;
     grainParameters.pan = 0.5;
     grainParameters.waveShape = 1;

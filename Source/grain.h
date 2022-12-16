@@ -71,7 +71,7 @@ private:
     float attackTime = 0; //time it takes to get to full volume in seconds
     float decayTime = 0; //time it takes to get to 0 volume after attack in seconds
     float length = 0; //full length in seconds (attackTime + decayTime)
-    int sampleRate = 44100;
+    int sampleRate = 48000;
     float currentIndex = 0;
     float amplitude = 0.5;
 
