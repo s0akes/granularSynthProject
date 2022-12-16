@@ -165,25 +165,25 @@ void GranularSynthProjectAudioProcessor::processBlock (juce::AudioBuffer<float>&
        
     //}
 
-    juce::ScopedNoDenormals noDenormals;
-    auto totalNumInputChannels  = getTotalNumInputChannels();
-    auto totalNumOutputChannels = getTotalNumOutputChannels();
+    //juce::ScopedNoDenormals noDenormals;
+    //auto totalNumInputChannels  = getTotalNumInputChannels();
+    //auto totalNumOutputChannels = getTotalNumOutputChannels();
 
-    for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
-        buffer.clear (i, 0, buffer.getNumSamples());
+    //for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
+    //    buffer.clear (i, 0, buffer.getNumSamples());
 
-    
-    for (int channel = 0; channel < totalNumInputChannels; ++channel)
-    {
-        // creates the circular delay buffer, delay line and feedback effect
-        fillDelayBuffer(channel, buffer.getNumSamples(), delayBuffer.getNumSamples(), buffer.getReadPointer(channel), delayBuffer.getReadPointer(channel));
-        getFromDelayBuffer(buffer, channel, buffer.getNumSamples(), delayBuffer.getNumSamples(), buffer.getReadPointer(channel), delayBuffer.getReadPointer(channel));
-        float* dryBuffer = buffer.getWritePointer(channel);
-        feedback(channel, buffer.getNumSamples(), delayBuffer.getNumSamples(), dryBuffer);
-    }
-    // increments the write pointer by a blocks worth of samples
-    delayWritePointer += buffer.getNumSamples();
-    delayWritePointer %= delayBuffer.getNumSamples();
+    //
+    //for (int channel = 0; channel < totalNumInputChannels; ++channel)
+    //{
+    //    // creates the circular delay buffer, delay line and feedback effect
+    //    fillDelayBuffer(channel, buffer.getNumSamples(), delayBuffer.getNumSamples(), buffer.getReadPointer(channel), delayBuffer.getReadPointer(channel));
+    //    getFromDelayBuffer(buffer, channel, buffer.getNumSamples(), delayBuffer.getNumSamples(), buffer.getReadPointer(channel), delayBuffer.getReadPointer(channel));
+    //    float* dryBuffer = buffer.getWritePointer(channel);
+    //    feedback(channel, buffer.getNumSamples(), delayBuffer.getNumSamples(), dryBuffer);
+    //}
+    //// increments the write pointer by a blocks worth of samples
+    //delayWritePointer += buffer.getNumSamples();
+    //delayWritePointer %= delayBuffer.getNumSamples();
 }
 
 // copies the the audio buffer into the delay buffer

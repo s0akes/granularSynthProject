@@ -52,7 +52,7 @@ public:
 
 private:
 
-    int counter = 0;
+    int chance = 0;
 
     bool foundActive = 0;
     double amplitude = 0;
@@ -65,7 +65,7 @@ private:
     juce::AudioProcessorValueTreeState* ADSRstate;
 
     grainParams grainParameters;
-
+    grainRandomiser randomiser;
     Dist waveShaper;
 
     double temp = 0;

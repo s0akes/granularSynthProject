@@ -24,13 +24,32 @@ public:
     int waveShape;//wave shaping profile int 1-5
     float pan; //0-100 panning of the grain
     Dist* waveShaper;
+    float grainVolume;//controls grain distortion
+    float grainControlVolume = 0.5;//makes sure everything is in the +-1 range
 
+};
+
+class grainRandomiser
+{
+public:
+
+    grainParams randomise(grainParams* params, double r);
+    bool randomTrigger();
+
+    int triggerChance = 20000;
+
+private:
+    float frequency(float f, double r);
+    float grainLength(float l, double r);
+    float grainShape();
+    float pan();
+    float grainVolume();
 };
 
 class grain
 {
 public:
-    // g1 = new grain(frequecy, randomness, pointer to buffer);
+    
     grain(); 
     
     void startGrain(grainParams* params, juce::AudioSampleBuffer* wt); //sets the frequency and the randomness of the grain
@@ -39,9 +58,9 @@ public:
     double getNextSampleR(); //returns the next sample based on the synth
 
     bool isActive(); //checks if the ADSR is acitve, if it is not then delete the grain
-
+    double getNextSample();
 private:
-    double getNextSample(); //returns the next sample based on the synth
+    //double getNextSample(); //returns the next sample based on the synth
     double temp;
 
     float randomFequency = 440; //the new frequency 
@@ -52,9 +71,8 @@ private:
     float attackTime = 0; //time it takes to get to full volume in seconds
     float decayTime = 0; //time it takes to get to 0 volume after attack in seconds
     float length = 0; //full length in seconds (attackTime + decayTime)
-    int sampleRate = 44100;
+    int sampleRate = 48000;
     float currentIndex = 0;
-    float amplitude = 0.5;
 
     grainParams parameters;
     Dist* waveShaper;

@@ -10,6 +10,7 @@
 
 #include "grain.h"
 #include <math.h>
+#include <random>
 
 grain::grain()
 {
@@ -20,10 +21,10 @@ void grain::startGrain(grainParams* params, juce::AudioSampleBuffer* wt)
 {
     parameters = *params;
     //set the frequency and attack/decay
-    envParam.attack = parameters.grainLength* parameters.grainShape;
-    envParam.decay = 0.0;
-    envParam.sustain = 1.0;
-    envParam.release = parameters.grainLength*(1- parameters.grainShape);
+    envParam.attack = 0.005 + parameters.grainLength * parameters.grainShape;
+    envParam.decay = 0.1;
+    envParam.sustain = 1;
+    envParam.release = 0.005 + parameters.grainLength * (1 - parameters.grainShape);
     envelope.setParameters(envParam);
     envelope.noteOn();
     
@@ -69,7 +70,7 @@ double grain::getNextSample()
     double V1 = waveTablePtr->getSample(0, index1);
     V = frac * V1 + (1 - frac) * V0; //interpolated value
 
-    V *= amplitude * (double)envelope.getNextSample();
+    V *= parameters.grainVolume * (double)envelope.getNextSample();
     if (envelope.getNextSample() > 0.99)
     {
         envelope.noteOff();
@@ -79,7 +80,9 @@ double grain::getNextSample()
     if (currentIndex >= (double)tSize) //wrap at the end of the wavetable
         currentIndex -= tSize;
 
-    parameters.waveShaper->distort(V);
+    V = parameters.waveShaper->distort(V);
+
+    V = V * parameters.grainControlVolume;//amplitude for cloud to control overall volume
 
     return V; //returns values from wavetable * envelope
 }
@@ -87,4 +90,58 @@ double grain::getNextSample()
 bool grain::isActive()
 {
     return envelope.isActive(); //returns false once envelope release phase is over, envlope is started in the constructor
+}
+
+grainParams grainRandomiser::randomise(grainParams* params, double r)
+{
+    grainParams output = *params;
+
+    output.frequency = frequency(output.frequency, r);
+    output.grainLength = grainLength(output.grainLength, r);
+    output.grainShape = grainShape();
+    output.pan = pan();
+    output.grainVolume = grainVolume();
+
+    return output;
+}
+
+bool grainRandomiser::randomTrigger()
+{
+    int temp = rand() % triggerChance;
+    if (temp == 1006)
+        return true;
+    else
+        return false;
+}
+
+float grainRandomiser::frequency(float f, double r)
+{
+    float random = (rand() % 100) - 50;
+    f = f + pow(2, (r * random * 50) / 1200);
+    return f;
+}
+
+float grainRandomiser::grainLength(float l, double r)
+{
+    float random = ((float)(rand() % 100) / 100);
+    l += random;
+    return l;
+}
+
+float grainRandomiser::grainShape()
+{
+    float random = (((float)(rand() % 100) / 100) * 0.8) + 0.1;
+    return random;
+}
+
+float grainRandomiser::pan()
+{
+    float random = (float)(rand() % 100)/100;
+    return random;
+}
+
+float grainRandomiser::grainVolume()
+{
+    float random = (float)(rand() % 100) / 100;
+    return random;
 }
