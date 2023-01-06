@@ -100,12 +100,13 @@ void SynthVoice::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int sta
     {
         densityEnv.getNextSample();
         //randomiser.triggerChance = randomiser.triggerChance * (1.5-(densityEnv.getNextSample()));
-        if ((rand() % 2000) == 1000)//temporary function to randomly trigger grain
+        if ((rand() % 44100) == 1)//temporary function to randomly trigger grain
         {
             for (int i = 0; i < grainStore.size(); i++)//finds the first active grain and starts playing it
             {
 
-                if (!grainStore[i].isActive() && densityEnv.isActive() == 1)
+                //if (!grainStore[i].isActive() && densityEnv.isActive() == 1)
+                if (!grainStore[i].isActive())
                 {
                     grainStore[i].startGrain(&randomiser.randomise(&grainParameters, 1), waveTablePtr); //this takes the base grainParams untill the random functon is created
                     break;
@@ -113,20 +114,50 @@ void SynthVoice::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int sta
             }
         }
         foundActive = 0;
-        for (int i = 0; i < grainStore.size(); i++) {
+        tempBuffer = 0;
+        for (int j = 0; j < grainStore.size(); j++) {
 
-            if (grainStore[i].isActive())
+            if (grainStore[j].isActive())
             {
-                outputBuffer.addSample(0, s, waveShaper.SoftClip(grainStore[i].getNextSampleL()));
-                outputBuffer.addSample(1, s, waveShaper.SoftClip(grainStore[i].getNextSampleR()));
-                //outputBuffer.addSample(0, s, grainStore[i].getNextSampleL());
-                //outputBuffer.addSample(1, s, grainStore[i].getNextSampleR());
+                //outputBuffer.addSample(0, s, waveShaper.SoftClip(grainStore[j].getNextSampleL()));
+                //outputBuffer.addSample(1, s, waveShaper.SoftClip(grainStore[j].getNextSampleR()));
+                //outputBuffer.addSample(0, s, grainStore[j].getNextSampleL());
+                //outputBuffer.addSample(1, s, grainStore[j].getNextSampleR());
+
+                tempBuffer += grainStore[j].getNextSampleL();
 
                 foundActive += 1;
             }
         }
+
+        outputBuffer.addSample(0, s, tempBuffer);
+
         if (foundActive == 0 && !densityEnv.isActive())
+        {
+
+            bool activeGrain = 0;
+
+            for (int i = 0; i < grainStore.size() - 1; i++)
+            {
+
+
+                if (grainStore[i].isActive())
+                {
+
+                    activeGrain = 1;
+                    break;
+
+                }
+
+            }
+            if (activeGrain == 0)
+            {
                 clearCurrentNote();
+                densityEnv.reset();
+                amplitude = 0.0;
+            }
+
+        }
     }
     //
     //if (!densityEnv.isActive())

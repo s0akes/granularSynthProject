@@ -69,4 +69,5 @@ private:
     Dist waveShaper;
 
     double temp = 0;
+    double tempBuffer = 0.;
 };

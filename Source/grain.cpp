@@ -80,7 +80,7 @@ double grain::getNextSample()
     if (currentIndex >= (double)tSize) //wrap at the end of the wavetable
         currentIndex -= tSize;
 
-    V = parameters.waveShaper->distort(V);
+    //V = parameters.waveShaper->distort(V);
 
     V = V * parameters.grainControlVolume;//amplitude for cloud to control overall volume
 
