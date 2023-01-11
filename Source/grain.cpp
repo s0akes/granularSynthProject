@@ -14,7 +14,7 @@
 
 grain::grain()
 {
-
+    envelope.reset();
 }
 
 void grain::startGrain(grainParams* params, juce::AudioSampleBuffer* wt)
@@ -80,7 +80,7 @@ double grain::getNextSample()
     if (currentIndex >= (double)tSize) //wrap at the end of the wavetable
         currentIndex -= tSize;
 
-    //V = parameters.waveShaper->distort(V);
+    //V = parameters.waveShaper->distort(V);  // Not in use currently but can be used if desired
 
     V = V * parameters.grainControlVolume;//amplitude for cloud to control overall volume
 

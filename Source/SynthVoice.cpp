@@ -38,11 +38,6 @@ void  SynthVoice::startNote(int midiNoteNumber, float velocity, juce::Synthesise
 {
     waveTablePtr = &(dynamic_cast<waveTableClass*>(sound)->waveTable);
 
-    //densityEnvParams.attack = 0.1;
-    //densityEnvParams.decay = 0.1;
-    //densityEnvParams.sustain = 0.4;
-    //densityEnvParams.release = 0.1;
-    //densityEnv.setParameters(densityEnvParams);
     densityEnv.noteOn();
 
     auto rawAttack = ADSRstate->getRawParameterValue("ATTACK");
@@ -53,8 +48,7 @@ void  SynthVoice::startNote(int midiNoteNumber, float velocity, juce::Synthesise
     densityEnvParams.attack = rawAttack->load();
     densityEnvParams.decay = rawDecay->load();
     densityEnvParams.sustain = rawSustain->load();
-    //densityEnvParams.release = rawRelease->load();
-    //updates envelope
+
     densityEnv.setParameters(densityEnvParams);
 
 
@@ -81,9 +75,7 @@ void  SynthVoice::stopNote(float velocity, bool allowTailOff)
 
 void  SynthVoice::pitchWheelMoved(int newPitchWheelValue)
 {
-    //const int wheelPos = m.getPitchWheelValue();
-    //lastPitchWheelValues[channel - 1] = wheelPos;
-    //handlePitchWheel(channel, wheelPos);
+  
 }
 
 void  SynthVoice::controllerMoved(int controllerNumber, int newControllerValue)
@@ -100,34 +92,30 @@ void SynthVoice::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int sta
     {
         densityEnv.getNextSample();
         //randomiser.triggerChance = randomiser.triggerChance * (1.5-(densityEnv.getNextSample()));
-        if ((rand() % 44100) == 1)//temporary function to randomly trigger grain
+        if ((rand() % 44100) == 1) //temporary function to randomly trigger grain
         {
             for (int i = 0; i < grainStore.size(); i++)//finds the first active grain and starts playing it
             {
 
-                //if (!grainStore[i].isActive() && densityEnv.isActive() == 1)
                 if (!grainStore[i].isActive())
                 {
-                    grainParams myParams = randomiser.randomise(&grainParameters, 1);
-                    //grainStore[i].startGrain(&randomiser.randomise(&grainParameters, 1), waveTablePtr); //this takes the base grainParams untill the random functon is created
+                    grainParams myParams = randomiser.randomise(&grainParameters, 1);                    
                     grainStore[i].startGrain(&myParams, waveTablePtr);
-                    //grainStore[i].startGrain(&grainParameters, waveTablePtr);
-                    break;
+
+                    break;                   
                 }
             }
         }
         foundActive = 0;
         tempBufferL = 0;
         tempBufferR = 0;
+
         for (int j = 0; j < grainStore.size(); j++) {
 
+      
             if (grainStore[j].isActive())
+            
             {
-                //outputBuffer.addSample(0, s, waveShaper.SoftClip(grainStore[j].getNextSampleL()));
-                //outputBuffer.addSample(1, s, waveShaper.SoftClip(grainStore[j].getNextSampleR()));
-                //outputBuffer.addSample(0, s, grainStore[j].getNextSampleL());
-                //outputBuffer.addSample(1, s, grainStore[j].getNextSampleR());
-
                 tempBufferL += grainStore[j].getNextSampleL();
                 tempBufferR += grainStore[j].getNextSampleR();
 
@@ -165,11 +153,6 @@ void SynthVoice::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int sta
 
         }
     }
-    //
-    //if (!densityEnv.isActive())
-    //{
-    //    clearCurrentNote();
-    //}
 
 }
 
@@ -205,10 +188,3 @@ void SynthVoice::parameterChanged(const juce::String& parameterID, float newValu
 }
 
 
-//randomly trigger a grain
-//every sample check grain::isActive() 
-//if it is acitve grain::getNextSample
-//repeat for every grain in the vector
-//add the samples together
-//output to buffer
-//done :)
