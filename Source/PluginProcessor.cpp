@@ -258,12 +258,9 @@ void GranularSynthProjectAudioProcessor::getStateInformation (juce::MemoryBlock&
 
 void GranularSynthProjectAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
 {
-    // You should use this method to restore your parameters from this memory block,
-    // whose contents will have been created by the getStateInformation() call.
-
-    std::unique_ptr<juce::XmlElement> xmlState(getXmlFromBinary(data, sizeInBytes)); // [PP 4.2]
+    std::unique_ptr<juce::XmlElement> xmlState(getXmlFromBinary(data, sizeInBytes)); 
     if (xmlState.get() != nullptr && xmlState->hasTagName(parameterTree.state.getType()))
-        parameterTree.replaceState(juce::ValueTree::fromXml(*xmlState)); // [PP 4.3]
+        parameterTree.replaceState(juce::ValueTree::fromXml(*xmlState));
 }
 
 juce::AudioProcessorValueTreeState::ParameterLayout GranularSynthProjectAudioProcessor::createParameterLayout()

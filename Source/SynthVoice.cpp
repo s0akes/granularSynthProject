@@ -108,13 +108,17 @@ void SynthVoice::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int sta
                 //if (!grainStore[i].isActive() && densityEnv.isActive() == 1)
                 if (!grainStore[i].isActive())
                 {
-                    grainStore[i].startGrain(&randomiser.randomise(&grainParameters, 1), waveTablePtr); //this takes the base grainParams untill the random functon is created
+                    grainParams myParams = randomiser.randomise(&grainParameters, 1);
+                    //grainStore[i].startGrain(&randomiser.randomise(&grainParameters, 1), waveTablePtr); //this takes the base grainParams untill the random functon is created
+                    grainStore[i].startGrain(&myParams, waveTablePtr);
+                    //grainStore[i].startGrain(&grainParameters, waveTablePtr);
                     break;
                 }
             }
         }
         foundActive = 0;
-        tempBuffer = 0;
+        tempBufferL = 0;
+        tempBufferR = 0;
         for (int j = 0; j < grainStore.size(); j++) {
 
             if (grainStore[j].isActive())
@@ -124,13 +128,15 @@ void SynthVoice::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int sta
                 //outputBuffer.addSample(0, s, grainStore[j].getNextSampleL());
                 //outputBuffer.addSample(1, s, grainStore[j].getNextSampleR());
 
-                tempBuffer += grainStore[j].getNextSampleL();
+                tempBufferL += grainStore[j].getNextSampleL();
+                tempBufferR += grainStore[j].getNextSampleR();
 
                 foundActive += 1;
             }
         }
 
-        outputBuffer.addSample(0, s, tempBuffer);
+        outputBuffer.addSample(0, s, tempBufferL);
+        outputBuffer.addSample(1, s, tempBufferR);
 
         if (foundActive == 0 && !densityEnv.isActive())
         {
