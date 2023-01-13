@@ -107,7 +107,7 @@ void SynthVoice::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int sta
             }
         }
         foundActive = 0;
-        tempBufferL = 0;
+        tempBufferL = 0; // Two buffers needed for panning, different values L&R
         tempBufferR = 0;
 
         for (int j = 0; j < grainStore.size(); j++) {
@@ -116,7 +116,7 @@ void SynthVoice::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int sta
             if (grainStore[j].isActive())
             
             {
-                tempBufferL += grainStore[j].getNextSampleL();
+                tempBufferL += grainStore[j].getNextSampleL(); 
                 tempBufferR += grainStore[j].getNextSampleR();
 
                 foundActive += 1;

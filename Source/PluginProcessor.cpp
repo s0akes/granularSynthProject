@@ -21,12 +21,12 @@ GranularSynthProjectAudioProcessor::GranularSynthProjectAudioProcessor()
                       #endif
                        .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
                      #endif
-                       ), parameterTree(*this, nullptr, "Parameters", createParameterLayout())
+                       ), parameterTree(*this, nullptr, "Parameters", createParameterLayout()) 
 #endif
 {
     synth.addSound(new waveTableClass()); //wavetableclass is the synthesiser sound
     
-    for (auto i = 0; i < 64; ++i) // create 4 voice polyphony by adding 4 voices to the synth object
+    for (auto i = 0; i < 64; ++i) // create polyphony by adding multiple voices to the synth object
         synth.addVoice (new SynthVoice(&parameterTree)); //voices are destroyed by the synth when not needed
 }
 
@@ -252,7 +252,7 @@ void GranularSynthProjectAudioProcessor::getStateInformation (juce::MemoryBlock&
 
     juce::ValueTree state = parameterTree.copyState();
     std::unique_ptr<juce::XmlElement> xml(state.createXml());
-    copyXmlToBinary(*xml, destData);
+    copyXmlToBinary(*xml, destData); 
 
 }
 
